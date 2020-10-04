@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Buy3C</string>
+
+    <!-- 首頁 -->
+    <string name="home_title">首頁</string>
+
+    <!-- 熱銷榜 -->
+    <string name="hot_sale_title">熱銷榜</string>
+
+    <!-- 熱門活動 -->
+    <string name="hot_camping_title">熱門活動</string>
+
+    <!-- 會員中心 -->
+    <string name="member_title">會員中心</string>
+
+    <!-- 購物車 -->
+    <string name="shopping_cart_title">購物車</string>
+
 </resources>

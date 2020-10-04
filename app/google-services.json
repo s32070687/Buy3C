@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "575097801680",
+    "firebase_url": "https://buy3c-fce67.firebaseio.com",
+    "project_id": "buy3c-fce67",
+    "storage_bucket": "buy3c-fce67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575097801680:android:7aa272451a24f05f1947d5",
+        "android_client_info": {
+          "package_name": "com.example.buy3c"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "575097801680-g6q5ggnreflooq70joimsgma4i1ijekj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMlHHdch7v_9V5AAj0Nxn_31aM19wj_Lc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "575097801680-g6q5ggnreflooq70joimsgma4i1ijekj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

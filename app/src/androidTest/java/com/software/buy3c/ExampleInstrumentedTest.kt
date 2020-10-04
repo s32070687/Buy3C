@@ -1,4 +1,4 @@
-package com.example.buy3c
+package com.software.buy3c
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
