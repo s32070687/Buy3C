@@ -32,6 +32,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+
     <com.google.android.material.tabs.TabLayout
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextColor="@color/color_666666"

@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
         mTabLayout = findViewById(R.id.tl_main)
 
         mToolbar?.let {
+            it.inflateMenu(R.menu.menu)
             it.setOnMenuItemClickListener { item ->
-                it.inflateMenu(R.menu.menu)
                 when (item.itemId) {
                     R.id.action_shopping_cart -> {
                         Log.e("Jason","購物車")
