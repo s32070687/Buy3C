@@ -1,13 +1,7 @@
-package com.example.buy3c.ui
+package com.software.buy3c.ui
 
 import android.content.Context
 import android.content.res.Resources
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -35,14 +29,10 @@ open class BaseFragment : Fragment(), FragmentBackHandler {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Log.e("Jason","onAttach")
         mOwnActivity = activity as? AppCompatActivity
         mOwnActivity?.let {
             mRes = it.resources
             mToolBar = it.supportActionBar
-            Log.e("Jason","$mOwnActivity mOwnActivity")
-            Log.e("Jason","${mOwnActivity?.supportActionBar} supportActionBar")
-            Log.e("Jason","$mToolBar mToolBar")
         }
     }
 

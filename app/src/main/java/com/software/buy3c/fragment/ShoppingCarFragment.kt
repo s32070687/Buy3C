@@ -1,15 +1,14 @@
-package com.example.buy3c.fragment
+package com.software.buy3c.fragment
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
-import com.example.buy3c.ui.BaseFragment
+import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.R
 
 /**

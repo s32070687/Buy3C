@@ -1,4 +1,4 @@
-package com.example.buy3c.ui
+package com.software.buy3c.ui
 
 import android.content.Context
 import android.os.Bundle

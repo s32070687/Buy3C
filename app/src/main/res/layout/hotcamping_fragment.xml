@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <Button
+        android:id="@+id/bt"
         android:text="熱門活動"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

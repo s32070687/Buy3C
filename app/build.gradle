@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.example.buy3c"
+        applicationId "com.software.buy3c"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -66,7 +66,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     //Firebase
-    implementation 'com.google.firebase:firebase-database:19.5.0'
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+    implementation 'com.google.firebase:firebase-database-ktx'
 
 }

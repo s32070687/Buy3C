@@ -1,7 +1,4 @@
-package com.example.buy3c.util
-
-import android.app.Application
-import android.content.Context
+package com.software.buy3c.util
 
 /**
  * #標題

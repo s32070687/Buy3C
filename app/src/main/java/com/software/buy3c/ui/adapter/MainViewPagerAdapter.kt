@@ -1,4 +1,4 @@
-package com.example.buy3c.ui.adapter
+package com.software.buy3c.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

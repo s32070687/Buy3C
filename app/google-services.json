@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:575097801680:android:7aa272451a24f05f1947d5",
+        "mobilesdk_app_id": "1:575097801680:android:e7863b7004c070db1947d5",
         "android_client_info": {
-          "package_name": "com.example.buy3c"
+          "package_name": "com.software.buy3c"
         }
       },
       "oauth_client": [

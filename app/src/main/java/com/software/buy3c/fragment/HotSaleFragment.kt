@@ -1,17 +1,16 @@
-package com.example.buy3c.fragment
+package com.software.buy3c.fragment
 
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
-import com.example.buy3c.ui.BaseFragment
-import com.example.buy3c.ui.FragmentPageManager
+import com.software.buy3c.ui.BaseFragment
+import com.software.buy3c.ui.FragmentPageManager
 import com.software.buy3c.R
 
 /**
@@ -33,7 +32,6 @@ class HotSaleFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.e("Jason","HotSale")
         return inflater.inflate(R.layout.hotsale_fragment, container, false)
     }
 
@@ -63,11 +61,11 @@ class HotSaleFragment : BaseFragment() {
                 ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT))
 
             val btnActionBack = actionbar.findViewById<ImageView>(R.id.iv_back)
-            btnActionBack.setOnClickListener { mOwnActivity?.onBackPressed() }
+            btnActionBack.visibility = View.INVISIBLE
 
             val btnActionCar = actionbar.findViewById<ImageView>(R.id.iv_shopping_car)
             btnActionCar.visibility = View.VISIBLE
-            btnActionBack.setOnClickListener {
+            btnActionCar.setOnClickListener {
                 Log.e("Jason","HotSale 購物車 ")
             }
         }

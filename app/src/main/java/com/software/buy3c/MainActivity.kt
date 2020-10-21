@@ -1,7 +1,8 @@
-package com.example.buy3c
+package com.software.buy3c
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -9,18 +10,19 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.example.buy3c.fragment.HomeFragment
-import com.example.buy3c.fragment.HotCampingFragment
-import com.example.buy3c.fragment.HotSaleFragment
-import com.example.buy3c.fragment.MemberFragment
-import com.example.buy3c.ui.adapter.MainViewPagerAdapter
+import com.software.buy3c.fragment.HomeFragment
+import com.software.buy3c.fragment.HotCampingFragment
+import com.software.buy3c.fragment.HotSaleFragment
+import com.software.buy3c.fragment.MemberFragment
+import com.software.buy3c.ui.adapter.MainViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
-import com.software.buy3c.R
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
 
-//    private var mToolbar: Toolbar? = null
     private var mViewPage: ViewPager? = null
     private var mTabLayout: TabLayout? = null
     private var mPagerAdapter: MainViewPagerAdapter? = null
@@ -31,15 +33,16 @@ class MainActivity : AppCompatActivity() {
         R.drawable.hot_activity_tab_selector,
         R.drawable.member_tab_selector
     )
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        database = Firebase.database.reference
         setView()
     }
 
     private fun setView() {
-//        mToolbar = findViewById(R.id.tb_main)
         mViewPage = findViewById(R.id.vp_main)
         mTabLayout = findViewById(R.id.tl_main)
 
@@ -55,7 +58,6 @@ class MainActivity : AppCompatActivity() {
         mViewPage?.adapter = mPagerAdapter
         mTabLayout?.setupWithViewPager(mViewPage)
         setTabItem()
-
     }
 
     private fun setTabItem() {
@@ -67,5 +69,17 @@ class MainActivity : AppCompatActivity() {
             imageView.setImageResource(tabIcon[i])
             mTabLayout?.getTabAt(i)?.customView = view
         }
+    }
+
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.app_name)
+        builder.setMessage("確定離開Buy3C嗎?")
+        builder.setPositiveButton("確定",
+            DialogInterface.OnClickListener { _, _ -> this.finish() })
+        builder.setNegativeButton("取消",
+            DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
+        val alert: AlertDialog = builder.create()
+        alert.show()
     }
 }

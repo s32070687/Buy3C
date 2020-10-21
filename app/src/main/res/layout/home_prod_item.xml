@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="5dp"
+    android:background="@color/color_white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_prod"
+        android:scaleType="fitXY"
+        android:src="@drawable/test_prod"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"/>
+
+    <TextView
+        android:id="@+id/tv_prod_name"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:layout_marginTop="5dp"
+        android:textSize="18sp"
+        android:text="超強電腦主機"
+        android:layout_below="@+id/iv_prod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:textSize="18sp"
+        android:textColor="@color/color_cc1e05"
+        android:text="$"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tv_prod_name"
+        android:id="@+id/tv_price_sign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_marginLeft="3dp"
+        android:textSize="18sp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tv_prod_name"
+        android:layout_toRightOf="@+id/tv_price_sign"
+        android:id="@+id/tv_price"
+        android:textColor="@color/color_cc1e05"
+        android:text="30000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
