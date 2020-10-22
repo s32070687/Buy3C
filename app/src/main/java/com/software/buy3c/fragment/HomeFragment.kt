@@ -13,10 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import com.software.buy3c.R
+import com.software.buy3c.api.ApiClientBuilder
+import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.api.gson.CampingData
+import com.software.buy3c.api.gson.HomeData
 import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.ui.FragmentPageManager
 import com.software.buy3c.ui.adapter.HomeAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * #標題
@@ -35,7 +41,7 @@ class HomeFragment : BaseFragment() {
 
     private var rvHome: RecyclerView? = null
     private var ref: DatabaseReference? = null
-    private var mData: ArrayList<CampingData>? = null
+    private var mAllData: AllData? = null
 
     @Suppress("PrivatePropertyName")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,20 +94,35 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun getData() {
-        ref = FirebaseDatabase.getInstance().reference.child("HomeData").child("CampingData")
-        val postListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val value = dataSnapshot.value
-                Log.e("Jason","$value value")
+        val call = ApiClientBuilder.createApiClient().getAllData()
+        call.enqueue(object : Callback<AllData> {
+
+            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
+                mAllData = response.body()
                 val adapter = mOwnActivity?.let {
-                    HomeAdapter(it,fragmentManager)
+                    mAllData?.HomeData?.let { data -> HomeAdapter(it, data, fragmentManager) }
                  }
                 rvHome?.adapter = adapter
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
+            override fun onFailure(call: Call<AllData>, t: Throwable) {
+                Log.d("response", "fail!!")
             }
-        }
-        ref?.addValueEventListener(postListener)
+
+        })
+//        ref = FirebaseDatabase.getInstance().reference.child("HomeData").child("CampingData")
+//        val postListener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                Log.e("Jason","Home")
+//                val adapter = mOwnActivity?.let {
+//                    HomeAdapter(it,fragmentManager)
+//                 }
+//                rvHome?.adapter = adapter
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//            }
+//        }
+//        ref?.addValueEventListener(postListener)
     }
 }

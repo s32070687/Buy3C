@@ -48,12 +48,10 @@ class HotCampingFragment : BaseFragment() {
         setHasOptionsMenu(true)
         mFpm = FragmentPageManager(mOwnActivity, fragmentManager)
         mData = ArrayList<CampingData>()
-        ref = FirebaseDatabase.getInstance().reference.child("HomeData").child("CampingData")
+        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HomeData").child("CampingData")
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.e("Jason","${dataSnapshot.value} value")
-                mData = dataSnapshot.value as ArrayList<CampingData>?
-                Log.e("Jason","${mData?.size} size")
+                Log.e("Jason","Hot")
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -67,7 +65,7 @@ class HotCampingFragment : BaseFragment() {
     private fun setView(view: View) {
         bt = view.findViewById(R.id.bt)
         bt?.setOnClickListener {
-            ref?.child("CampingData")?.setValue(setData())
+            ref?.setValue(setData())
             Log.e("Jason","insert")
         }
     }
@@ -75,39 +73,39 @@ class HotCampingFragment : BaseFragment() {
     private fun setData(): ArrayList<CampingData> {
 
         val data1 = CampingData()
-        data1.Name = "凡購買ROG PHONE3系列手機送ROG炫光保護殼+ROG桌上型遊戲基座】ROG Phone 3 (ZS661KS  12G/512G)"
-        data1.Id = 1
-        data1.ImageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1602724405_201408A1800001.jpg"
-        data1.Price = 29990
-        data1.Discount = 25000
+        data1.name = "凡購買ROG PHONE3系列手機送ROG炫光保護殼+ROG桌上型遊戲基座】ROG Phone 3 (ZS661KS  12G/512G)"
+        data1.id = 1
+        data1.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1602724405_201408A1800001.jpg"
+        data1.price = 29990
+        data1.discount = 25000
 
         val data2 = CampingData()
-        data2.Name = "Zenfone 7 Pro 十月好禮 翻轉鉅獻 登錄送 1MOEW Stylish 真無線藍牙耳機 "
-        data2.Id = 2
-        data2.ImageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1601460612_201408A1800001.jpg"
-        data2.Price = 18000
-        data2.Discount = 15000
+        data2.name = "Zenfone 7 Pro 十月好禮 翻轉鉅獻 登錄送 1MOEW Stylish 真無線藍牙耳機 "
+        data2.id = 2
+        data2.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1601460612_201408A1800001.jpg"
+        data2.price = 18000
+        data2.discount = 15000
 
         val data3 = CampingData()
-        data3.Name = "Zenfone 7 Pro 十月好禮 翻轉鉅獻 登錄送三軸穩定器】ZenFone 7 Pro (ZS671KS 8G/256G)"
-        data3.Id = 3
-        data3.ImageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1602464987_201408A1800001.jpg"
-        data3.Price = 16000
-        data3.Discount = 13000
+        data3.name = "Zenfone 7 Pro 十月好禮 翻轉鉅獻 登錄送三軸穩定器】ZenFone 7 Pro (ZS671KS 8G/256G)"
+        data3.id = 3
+        data3.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1602464987_201408A1800001.jpg"
+        data3.price = 16000
+        data3.discount = 13000
 
         val data4 = CampingData()
-        data4.Name = "ASUS Store 讀賣機種 "
-        data4.Id = 4
-        data4.ImageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1602667934_201408A1800001.jpg"
-        data4.Price = 20000
-        data4.Discount = 18000
+        data4.name = "ASUS Store 讀賣機種 "
+        data4.id = 4
+        data4.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1602667934_201408A1800001.jpg"
+        data4.price = 20000
+        data4.discount = 18000
 
         val data5 = CampingData()
-        data5.Name = "戰場遊我罩ROG周邊58折起"
-        data5.Id = 5
-        data5.ImageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1601264969_201408A1800001.jpg"
-        data5.Price = 15000
-        data5.Discount = 7500
+        data5.name = "戰場遊我罩ROG周邊58折起"
+        data5.id = 5
+        data5.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1601264969_201408A1800001.jpg"
+        data5.price = 15000
+        data5.discount = 7500
 
         mData?.add(data1)
         mData?.add(data2)

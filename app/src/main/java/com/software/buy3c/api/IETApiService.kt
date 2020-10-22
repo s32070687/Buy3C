@@ -1,5 +1,6 @@
 package com.software.buy3c.api
 
+import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.api.gson.HomeData
 import retrofit2.Call
 import retrofit2.http.GET
@@ -18,6 +19,6 @@ import retrofit2.http.Headers
  */
 interface IETApiService {
     @Headers("Content-Type: application/json")
-    @GET("HomeData.json")
-    fun getHomeData(): Call<HomeData>
+    @GET("AllData.json")
+    fun getAllData(): Call<AllData>
 }

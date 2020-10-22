@@ -32,7 +32,7 @@ import com.software.buy3c.api.gson.HomeData
  * #副維護
  */
 
-class HomeAdapter (private val context: Context, mFm: FragmentManager?, val mFpm : FragmentPageManager = FragmentPageManager(context,mFm)) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeAdapter (private val context: Context, val mData: HomeData, mFm: FragmentManager?, val mFpm : FragmentPageManager = FragmentPageManager(context,mFm)) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
     private val minScale = 0.80f
@@ -98,7 +98,7 @@ class HomeAdapter (private val context: Context, mFm: FragmentManager?, val mFpm
         }
 
         override fun getCount(): Int {
-            return 5
+            return mData.CampingData?.size!!
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -106,7 +106,7 @@ class HomeAdapter (private val context: Context, mFm: FragmentManager?, val mFpm
             val ivBanner = itemView.findViewById<View>(R.id.iv_banner) as ImageView
 
             Glide.with(context)
-                .load("https://img-tw1.asus.com/D/deploy/AWC000013/1602724405_201408A1800001.jpg")
+                .load(mData.CampingData?.get(position)?.imageUrl)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(ivBanner)
@@ -128,7 +128,7 @@ class HomeAdapter (private val context: Context, mFm: FragmentManager?, val mFpm
         }
 
         override fun getItemCount(): Int {
-            return 10
+            return mData.ProdData?.size!!
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
