@@ -141,7 +141,15 @@ class HomeAdapter (private val context: Context, val mData: HomeData, mFm: Fragm
             private val tvProdPrice = v.findViewById<TextView?>(R.id.tv_price)
 
             fun bind(position: Int) {
+                val data = mData.ProdData?.get(position)
+                Glide.with(context)
+                    .load(data?.imageUrl)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .into(ivProd)
 
+                tvProdName?.text = data?.name
+                tvProdPrice?.text = data?.discount.toString()
             }
         }
     }
