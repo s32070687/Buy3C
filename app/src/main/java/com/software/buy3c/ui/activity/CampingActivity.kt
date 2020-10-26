@@ -11,7 +11,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.software.buy3c.R
-import com.software.buy3c.api.gson.CampingData
+import com.software.buy3c.api.gson.ProdData
 
 /**
  * #標題
@@ -30,7 +30,7 @@ class CampingActivity : AppCompatActivity() {
     private var tvPrice: TextView? = null
     private var tvDiscountPrice: TextView? = null
     private var tvCampingName: TextView? = null
-    private var campingParam: CampingData? = null
+    private var campingParam: ProdData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +71,7 @@ class CampingActivity : AppCompatActivity() {
 
     private fun setData() {
         if (intent != null) {
-            campingParam = intent.getSerializableExtra("campingData") as? CampingData
+            campingParam = intent.getSerializableExtra("campingData") as? ProdData
             campingParam?.let {
                 ivCamping?.let {view ->
                     Glide.with(this)
@@ -83,7 +83,7 @@ class CampingActivity : AppCompatActivity() {
 
                 tvPrice?.text = it.price.toString()
                 tvDiscountPrice?.text = it.discount.toString()
-                tvCampingName?.text = it.name
+                tvCampingName?.text = it.detail
             }
         }
     }

@@ -10,12 +10,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.ui.FragmentPageManager
 import com.software.buy3c.R
-import com.software.buy3c.api.gson.CampingData
+import com.software.buy3c.api.ApiClientBuilder
+import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.api.gson.ProdData
+import com.software.buy3c.ui.adapter.HotCampingAdapter
+import com.software.buy3c.ui.adapter.HotSaleAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * #標題
@@ -31,8 +39,10 @@ import com.software.buy3c.api.gson.ProdData
 class HotCampingFragment : BaseFragment() {
 
     private var bt: Button? = null
+    private var rvHotCamping: RecyclerView? = null
+    private var mAdapter: HotCampingAdapter? = null
     private var ref: DatabaseReference? = null
-    private var mData: ArrayList<CampingData>? = null
+    private var mData: ArrayList<ProdData>? = null
     private var mData1: ArrayList<ProdData>? = null
 
     @Suppress("PrivatePropertyName")
@@ -48,12 +58,75 @@ class HotCampingFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+        setDataBase()
         mFpm = FragmentPageManager(mOwnActivity, fragmentManager)
-        mData = ArrayList<CampingData>()
+        setView(view)
+        getData()
+    }
+
+    private fun setView(view: View) {
+        rvHotCamping = view.findViewById(R.id.rv_hot_camping)
+        mAdapter = mOwnActivity?.let {it ->
+            HotCampingAdapter(it, fragmentManager)
+        }
+        rvHotCamping?.layoutManager = LinearLayoutManager(mOwnActivity)
+        rvHotCamping?.adapter = mAdapter
+        bt = view.findViewById(R.id.bt)
+        bt?.setOnClickListener {
+//            ref?.setValue(setData4())
+        }
+    }
+
+    private fun getData() {
+        val call = ApiClientBuilder.createApiClient().getAllData()
+        call.enqueue(object : Callback<AllData> {
+
+            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
+                val data = response.body()
+                data?.HotCampingData?.let { mAdapter?.setData(it) }
+            }
+
+            override fun onFailure(call: Call<AllData>, t: Throwable) {
+                Log.d("response", "${t.message}")
+            }
+        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        setActionBar()
+    }
+
+    @SuppressLint("InflateParams")
+    private fun setActionBar() {
+        if (mOwnActivity != null) {
+            mOwnActivity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            mOwnActivity?.supportActionBar?.setDisplayShowHomeEnabled(false)
+            mOwnActivity?.supportActionBar?.setDisplayShowCustomEnabled(true)
+            val mInflater = LayoutInflater.from(mOwnActivity)
+            val actionbar = mInflater.inflate(R.layout.actionbar_main, null)
+            (actionbar.findViewById<View>(R.id.tv_title) as TextView).text = getString(R.string.hot_camping_title)
+            mOwnActivity?.supportActionBar?.setCustomView(actionbar, ActionBar.LayoutParams(
+                ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT))
+
+            val btnActionBack = actionbar.findViewById<ImageView>(R.id.iv_back)
+            btnActionBack.visibility = View.INVISIBLE
+
+            val btnActionCar = actionbar.findViewById<ImageView>(R.id.iv_shopping_car)
+            btnActionCar.visibility = View.VISIBLE
+            btnActionCar.setOnClickListener {
+                Log.e("Jason","HotCamping 購物車 ")
+            }
+        }
+    }
+
+    private fun setDataBase() {
+        mData = ArrayList<ProdData>()
         mData1 = ArrayList<ProdData>()
-//        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("CampingData").child("ProdData")
+//        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HomeData").child("CampingData")
 //        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HomeData").child("ProdData")
-        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HotSaleData")
+//        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HotSaleData")
+        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HotCampingData")
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.e("Jason","Hot")
@@ -63,55 +136,68 @@ class HotCampingFragment : BaseFragment() {
             }
         }
         ref?.addValueEventListener(postListener)
-        setView(view)
-
-    }
-
-    private fun setView(view: View) {
-        bt = view.findViewById(R.id.bt)
-        bt?.setOnClickListener {
-            ref?.setValue(setData3())
-            Log.e("Jason","insert")
-        }
     }
 
     //CampingData
-    private fun setData(): ArrayList<CampingData> {
+    private fun setData(): ArrayList<ProdData> {
 
-        val data1 = CampingData()
+        val data1 = ProdData()
         data1.name = "凡購買ROG PHONE3系列手機送ROG炫光保護殼+ROG桌上型遊戲基座】ROG Phone 3 (ZS661KS  12G/512G)"
         data1.id = 1
         data1.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1602724405_201408A1800001.jpg"
         data1.price = 29990
         data1.discount = 25000
+        data1.detail = "S865Plus 5G 高通旗艦處理器\n" +
+                "AMOLED 144Hz/1ms動態畫質\n" +
+                "AirTrigger 3超音波觸控鍵\n" +
+                "12G RAM / 512G ROM\n" +
+                "6000mAh超大電量\n" +
+                "全新X模式專家級系統效能調校\n" +
+                "享延長保固6個月\n" +
+                "隨貨送ROG炫光保護殼(價值\$1490)、限量加贈-ROG Phone 3 遊戲控制器 (價值\$3990)-限量售完即停"
+        data1.type = 5
 
-        val data2 = CampingData()
+        val data2 = ProdData()
         data2.name = "Zenfone 7 Pro 十月好禮 翻轉鉅獻 登錄送 1MOEW Stylish 真無線藍牙耳機 "
         data2.id = 2
         data2.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1601460612_201408A1800001.jpg"
         data2.price = 18000
         data2.discount = 15000
+        data2.detail = "於活動指定期間，購買ZenFone 7 (ZS670KS) (6G/128G & 8G/128G)，並於登錄期間，再到本活動專頁登錄資料(如尚未註冊成為ASUS官網會員者，應先完成註冊），符合資格者即可獲得「1MORE Stylish 真無線藍牙耳機」(市價\$2,790元，數量有限，送完為止) 乙個！"
+        data2.type = 5
 
-        val data3 = CampingData()
+        val data3 = ProdData()
         data3.name = "Zenfone 7 Pro 十月好禮 翻轉鉅獻 登錄送三軸穩定器】ZenFone 7 Pro (ZS671KS 8G/256G)"
         data3.id = 3
         data3.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1602464987_201408A1800001.jpg"
         data3.price = 16000
         data3.discount = 13000
+        data3.detail = "6400 萬畫素 SONY 旗艦級 IMX686 感光元件\n" +
+                "64 位元高通® Snapdragon™ 865 Plus 八核心 5G 處理器 ，搭載 7 奈米製程\n" +
+                "6.67 吋 20:9 (2400 x 1080) AMOLED 螢幕，搭載 90 Hz 螢幕刷新率\n" +
+                "ASUS Store及ZenFone專賣店 獨享延長保固6個月\n" +
+                "產品金額超過2萬元超取上限，故不開放超商取貨，敬請見諒\n" +
+                "9/1~10/31，指定通路買ZenFone 7 Pro (8G/256G) 登錄送 ASUS ZenGimbal 三軸穩定器！（建議售價\$4,990！限量，贈完為止）\n" +
+                "煥彩白線商城已售完， 線上商城已售完不補，請點選門市取貨，挑選離您最近的專賣店下單，謝謝您"
+        data3.type = 5
 
-        val data4 = CampingData()
-        data4.name = "ASUS Store 讀賣機種 "
+        val data4 = ProdData()
+        data4.name = "ASUS Store 獨賣機種 "
         data4.id = 4
-        data4.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1602667934_201408A1800001.jpg"
+        data4.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1603674672_201408A1800001.jpg"
         data4.price = 20000
         data4.discount = 18000
+        data4.detail = "ASUS Store 台灣 TW ROG 11月電競優惠, ROG Cetra RGB 入耳式電競耳機, 【贈電競鼠墊】ROG Strix Scope RX RGB 光學機械鍵盤 紅軸, 【贈電競鼠墊】ROG Strix Impact II Wireless 電競滑鼠"
+        data4.type = 5
 
-        val data5 = CampingData()
+        val data5 = ProdData()
         data5.name = "戰場遊我罩ROG周邊58折起"
         data5.id = 5
         data5.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1601264969_201408A1800001.jpg"
         data5.price = 15000
         data5.discount = 7500
+        data5.detail = "敗家了敗家了，如此邪惡的眼神看著你，打58折還不買爆它！華碩電競周邊十月來罩你啦！同時推出三樣新品- IMPACT II Wireless 無線終於出現了，二代小鋼炮已經備受好評，終於有無線款了！SCABBARD II 超大型滑鼠墊做了更棒奈米保護塗層的改版！還有一咖高達 22 公升的內部空間，最高可容納一台 17 吋筆電的 BP2701 電競背包！"
+        data5.type = 0
 
         mData?.add(data1)
         mData?.add(data2)
@@ -934,31 +1020,60 @@ class HotCampingFragment : BaseFragment() {
         return mData1!!
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        setActionBar()
-    }
+    //HotCampingData 熱門活動
+    private fun setData4(): ArrayList<ProdData> {
 
-    @SuppressLint("InflateParams")
-    private fun setActionBar() {
-        if (mOwnActivity != null) {
-            mOwnActivity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            mOwnActivity?.supportActionBar?.setDisplayShowHomeEnabled(false)
-            mOwnActivity?.supportActionBar?.setDisplayShowCustomEnabled(true)
-            val mInflater = LayoutInflater.from(mOwnActivity)
-            val actionbar = mInflater.inflate(R.layout.actionbar_main, null)
-            (actionbar.findViewById<View>(R.id.tv_title) as TextView).text = getString(R.string.hot_camping_title)
-            mOwnActivity?.supportActionBar?.setCustomView(actionbar, ActionBar.LayoutParams(
-                ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT))
+        val data1 = ProdData()
+        data1.name = "雙11必買推薦｜小米/ 小米掃地機器人/ 米家掃地機器人/小瓦智慧掃地機器人"
+        data1.id = 1
+        data1.imageUrl = "https://content.shopback.com/tw/wp-content/uploads/2019/11/05143947/vacuum-mi.jpg"
+        data1.price = 29990
+        data1.discount = 25000
+        data1.detail = "懶人、孝親必備——小米掃地機器人！米家掃地機器人是雙11大熱門商品，一直以來在掃地機器人中評價都很高的米家掃地機器人，是兼具美觀、CP值、性能的好物！想要省荷包就趁雙11熱潮購入吧～"
+        data1.type = 6
 
-            val btnActionBack = actionbar.findViewById<ImageView>(R.id.iv_back)
-            btnActionBack.visibility = View.INVISIBLE
+        val data2 = ProdData()
+        data2.name = "雙11必買推薦｜Dyson /Dyson V8 / Dyson V10/ Dyson V11，吸塵器、吹風機"
+        data2.id = 2
+        data2.imageUrl = "https://content.shopback.com/tw/wp-content/uploads/2018/03/24004538/1-1-e1521823616802.jpg"
+        data2.price = 18000
+        data2.discount = 15000
+        data2.detail = "你知道買Dyson也能賺ShopBack現金回饋嗎？Dyson是每個家庭夢寐以求的超強商品，幾乎終年不特價，想要買便宜，最好就是趁雙11搭配ShopBack購入！Dyson V8、Dyson V10 吸塵器，或是 Dyson Supersonic 吹風機、空氣清淨機、冷暖扇…，平常捨不得下手的都趁現在，雙11買Dyson最便宜！"
+        data2.type = 6
 
-            val btnActionCar = actionbar.findViewById<ImageView>(R.id.iv_shopping_car)
-            btnActionCar.visibility = View.VISIBLE
-            btnActionCar.setOnClickListener {
-                Log.e("Jason","HotCamping 購物車 ")
-            }
-        }
+        val data3 = ProdData()
+        data3.name = "雙11必買推薦｜PS4/ PS4 pro"
+        data3.id = 3
+        data3.imageUrl = "https://content.shopback.com/tw/wp-content/uploads/2019/11/05154502/SONY-PS4-Pro.jpg"
+        data3.price = 16000
+        data3.discount = 13000
+        data3.detail = "PS4是不管你邀請朋友來家裡，或是自己一人想殺時間，都非常好玩的遊戲機！價格有點高沒關係，就趁雙11買PS4吧，連機帶遊戲一起購入，魔物獵人 世界、Final Fantasy XV、尼爾：自動人形、湯姆克蘭西：全境封鎖….下班、假日就玩PS4玩爽爽囉，雙11買PS4，也算是為（無聊的）春節過年做準備囉。"
+        data3.type = 0
+
+        val data4 = ProdData()
+        data4.name = "雙11必買推薦｜Honeywell 空氣清淨機"
+        data4.id = 4
+        data4.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1602667934_201408A1800001.jpg"
+        data4.price = 20000
+        data4.discount = 18000
+        data4.detail = "這台網路超夯爆款美國 Honeywell空氣清淨機+連續7年的空氣清淨機銷售冠軍，你跟上了嗎？空污問題越來越嚴重，你需要Honeywell空氣清淨機來照顧家人的身體健康，這台空氣清淨機高貴不貴，趁雙11買最划算！透過ShopBack買Honeywell，賺一波現金回饋+讓家裡的空氣清新，過敏掰掰！"
+        data4.type = 6
+
+        val data5 = ProdData()
+        data5.name = "雙11必買推薦｜任天堂 Switch主機/Switch遊戲"
+        data5.id = 5
+        data5.imageUrl = "https://img-tw1.asus.com/D/deploy/AWC000013/1601264969_201408A1800001.jpg"
+        data5.price = 15000
+        data5.discount = 7500
+        data5.detail = "Switch主機不含遊戲價格大約在9000元左右，但雙11可以趁ShopBack加碼現金回饋時大買一波喔！PChome 24h、Yahoo、蝦皮商城…你習慣的購物平台我們通通有，只要在購物前先連到ShopBack，就能輕輕鬆鬆賺現金！如果你已經有Switch主機，也可以趁機補充Switch遊戲，瑪利歐網球 王牌高手、漆彈大作戰2、任天堂明星大亂鬥…超好玩任天堂遊戲都在這，雙11買Switch就對啦～"
+        data5.type = 0
+
+        mData?.add(data1)
+        mData?.add(data2)
+        mData?.add(data3)
+        mData?.add(data4)
+        mData?.add(data5)
+
+        return mData!!
     }
 }

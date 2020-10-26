@@ -22,11 +22,11 @@
                 android:src="@drawable/test_prod" />
 
             <TextView
+                android:layout_marginLeft="15dp"
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_camping"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
                 android:text="售價:"
                 android:textColor="@color/color_black"
@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_camping"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/tv_price"
                 android:textColor="@color/color_666666"
@@ -46,11 +47,11 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:layout_marginLeft="15dp"
                 android:id="@+id/tv_discount_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_price"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
                 android:text="特價:"
                 android:textColor="@color/color_black"
@@ -64,17 +65,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_price"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/color_cc1e05"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:layout_marginLeft="15dp"
                 android:id="@+id/tv_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_discount_text"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
                 android:text="活動介紹:"
                 android:textColor="@color/color_black"
@@ -87,6 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_detail"
                 android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/color_black"
                 android:textSize="18sp"

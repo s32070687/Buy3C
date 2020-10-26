@@ -17,22 +17,15 @@ import java.io.Serializable
 class AllData {
     var HomeData: HomeData? = null
     var HotSaleData: ArrayList<ProdData>? = null
-    var HotCampingData: HotCampingData? = null
+    var HotCampingData: ArrayList<ProdData>? = null
     var MemberData: MemberData? = null
 }
 class HomeData {
-    var CampingData: ArrayList<CampingData>? = null
+    var CampingData: ArrayList<ProdData>? = null
     var ProdData: ArrayList<ProdData>? = null
 }
 
-class CampingData : Serializable{
-    var name: String? = null
-    var id: Int? = null
-    var imageUrl: String? = null
-    var price: Int? = null
-    var discount: Int? = null
-}
-//type 0:主機(電腦，遊戲) 1: 螢幕 2:鍵盤 3:筆電 4:音響
+//type 0:主機(電腦，遊戲) 1: 螢幕 2:鍵盤 3:筆電 4:音響 5:手機 6:家電
 class ProdData : Serializable {
     var name: String? = null
     var id: Int? = null
@@ -41,14 +34,6 @@ class ProdData : Serializable {
     var discount: Int? = null
     var detail: String? = null
     var type: Int? = null
-}
-
-class HotCampingData : Serializable {
-    var name: String? = null
-    var id: Int? = null
-    var imageUrl: String? = null
-    var price: Int? = null
-    var discount: Int? = null
 }
 
 class MemberData {
