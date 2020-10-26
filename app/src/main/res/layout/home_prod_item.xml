@@ -43,7 +43,7 @@
         android:layout_toRightOf="@+id/tv_price_sign"
         android:id="@+id/tv_price"
         android:textColor="@color/color_cc1e05"
-        android:text="30000"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

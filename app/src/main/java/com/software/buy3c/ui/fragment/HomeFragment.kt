@@ -102,7 +102,7 @@ class HomeFragment : BaseFragment() {
             }
 
             override fun onFailure(call: Call<AllData>, t: Throwable) {
-                Log.d("response", "fail!!")
+                Log.d("response", "${t.message}")
             }
         })
     }

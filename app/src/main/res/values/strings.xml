@@ -6,6 +6,10 @@
 
     <!-- 熱銷榜 -->
     <string name="hot_sale_title">熱銷榜</string>
+    <string name="hot_sale_tab_0">主機</string>
+    <string name="hot_sale_tab_1">螢幕</string>
+    <string name="hot_sale_tab_4">喇叭</string>
+    <string name="hot_sale_tab_3">筆電</string>
 
     <!-- 熱門活動 -->
     <string name="hot_camping_title">熱門活動</string>

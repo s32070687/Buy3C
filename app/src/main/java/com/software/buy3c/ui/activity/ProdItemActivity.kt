@@ -1,5 +1,6 @@
 package com.software.buy3c.ui.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -67,6 +68,7 @@ class ProdItemActivity : AppCompatActivity() {
         tvProdDetail = findViewById(R.id.tv_detail_text)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setData() {
         if (intent != null) {
             prodParam = intent.getSerializableExtra("prodData") as? ProdData

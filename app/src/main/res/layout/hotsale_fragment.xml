@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:text="熱銷"
-        android:layout_width="wrap_content"
+    <com.google.android.material.tabs.TabLayout
+        app:tabGravity="fill"
+        android:background="@color/color_white"
+        app:tabSelectedTextColor="@color/colorPrimaryDark"
+        app:tabIndicatorHeight="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        android:id="@+id/tl_hot_sale_main">
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tl_hot_sale_main"
+        android:id="@+id/rv_hot_sale"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
