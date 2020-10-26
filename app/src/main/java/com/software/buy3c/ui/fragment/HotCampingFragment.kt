@@ -1,4 +1,4 @@
-package com.software.buy3c.fragment
+package com.software.buy3c.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Build

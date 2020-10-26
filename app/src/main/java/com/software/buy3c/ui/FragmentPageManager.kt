@@ -95,6 +95,10 @@ class FragmentPageManager(private val mCtx: Context?, private val mFm: FragmentM
         isOnlyPage = onlyPage
     }
 
+    fun setAnimationType(type: Int) {
+        animationType = type
+    }
+
     companion object {
         var count = 0
         const val ANIM_TYPE_SHOPPING_PART = 0

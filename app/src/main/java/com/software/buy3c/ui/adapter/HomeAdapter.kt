@@ -1,6 +1,7 @@
 package com.software.buy3c.ui.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +18,9 @@ import com.software.buy3c.ui.AutoHeightViewPager
 import com.software.buy3c.ui.FragmentPageManager
 import com.google.android.material.tabs.TabLayout
 import com.software.buy3c.R
-import com.software.buy3c.api.gson.CampingData
 import com.software.buy3c.api.gson.HomeData
+import com.software.buy3c.ui.activity.CampingActivity
+import com.software.buy3c.ui.activity.ProdItemActivity
 
 /**
  * #標題
@@ -104,12 +106,19 @@ class HomeAdapter (private val context: Context, val mData: HomeData, mFm: Fragm
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
             val itemView = mLayoutInflater.inflate(R.layout.home_banner_item, container, false)
             val ivBanner = itemView.findViewById<View>(R.id.iv_banner) as ImageView
-
+            val data = mData.CampingData?.get(position)
             Glide.with(context)
                 .load(mData.CampingData?.get(position)?.imageUrl)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(ivBanner)
+
+            itemView.setOnClickListener {
+                val intent = Intent()
+                intent.setClass(context,CampingActivity::class.java)
+                intent.putExtra("campingData", data)
+                context.startActivity(intent)
+            }
 
             container.addView(itemView)
             return itemView
@@ -135,7 +144,8 @@ class HomeAdapter (private val context: Context, val mData: HomeData, mFm: Fragm
             holder.bind(position)
         }
 
-        inner class ViewHolder(val v: View) : RecyclerView.ViewHolder(v) {
+        inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+            private val rlProdItem = v.findViewById<RelativeLayout>(R.id.rl_prod_item)
             private val ivProd = v.findViewById<ImageView>(R.id.iv_prod)
             private val tvProdName = v.findViewById<TextView>(R.id.tv_prod_name)
             private val tvProdPrice = v.findViewById<TextView?>(R.id.tv_price)
@@ -148,8 +158,15 @@ class HomeAdapter (private val context: Context, val mData: HomeData, mFm: Fragm
                     .error(R.drawable.ic_launcher_background)
                     .into(ivProd)
 
+                rlProdItem.setOnClickListener {
+                    val intent = Intent()
+                    intent.setClass(context,ProdItemActivity::class.java)
+                    intent.putExtra("prodData", data)
+                    context.startActivity(intent)
+                }
                 tvProdName?.text = data?.name
                 tvProdPrice?.text = data?.discount.toString()
+
             }
         }
     }

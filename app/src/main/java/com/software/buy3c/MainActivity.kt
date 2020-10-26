@@ -10,16 +10,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.software.buy3c.fragment.HomeFragment
-import com.software.buy3c.fragment.HotCampingFragment
-import com.software.buy3c.fragment.HotSaleFragment
-import com.software.buy3c.fragment.MemberFragment
+import com.software.buy3c.ui.fragment.HotCampingFragment
+import com.software.buy3c.ui.fragment.HotSaleFragment
+import com.software.buy3c.ui.fragment.MemberFragment
 import com.software.buy3c.ui.adapter.MainViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-
+import com.software.buy3c.ui.fragment.HomeFragment
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,5 +1,7 @@
 package com.software.buy3c.api.gson
 
+import java.io.Serializable
+
 /**
  * #標題
  * #描述
@@ -21,7 +23,7 @@ class HomeData {
     var ProdData: ArrayList<ProdData>? = null
 }
 
-class CampingData {
+class CampingData : Serializable{
     var name: String? = null
     var id: Int? = null
     var imageUrl: String? = null
@@ -29,7 +31,7 @@ class CampingData {
     var discount: Int? = null
 }
 
-class ProdData {
+class ProdData : Serializable {
     var name: String? = null
     var id: Int? = null
     var imageUrl: String? = null
@@ -39,10 +41,22 @@ class ProdData {
     var type: Int? = null
 }
 
-class HotSaleData {
+class HotSaleData : Serializable {
     var name: String? = null
     var id: Int? = null
     var imageUrl: String? = null
     var price: Int? = null
     var discount: Int? = null
+}
+
+class HotCampingData : Serializable {
+    var name: String? = null
+    var id: Int? = null
+    var imageUrl: String? = null
+    var price: Int? = null
+    var discount: Int? = null
+}
+
+class MemberData {
+
 }

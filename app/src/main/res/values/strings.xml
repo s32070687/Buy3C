@@ -16,4 +16,11 @@
     <!-- 購物車 -->
     <string name="shopping_car_title">購物車</string>
 
+    <!-- 商品頁 -->
+    <string name="camping_title">活動頁</string>
+
+    <!-- 商品頁 -->
+    <string name="prod_title">商品頁</string>
+    <string name="prod_add_shopping_car">加入購物車</string>
+
 </resources>

@@ -1,7 +1,6 @@
 package com.software.buy3c.api
 
 import com.software.buy3c.api.gson.AllData
-import com.software.buy3c.api.gson.HomeData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers

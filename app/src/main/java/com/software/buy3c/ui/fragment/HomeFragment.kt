@@ -1,4 +1,4 @@
-package com.software.buy3c.fragment
+package com.software.buy3c.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -11,12 +11,9 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.*
 import com.software.buy3c.R
 import com.software.buy3c.api.ApiClientBuilder
 import com.software.buy3c.api.gson.AllData
-import com.software.buy3c.api.gson.CampingData
-import com.software.buy3c.api.gson.HomeData
 import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.ui.FragmentPageManager
 import com.software.buy3c.ui.adapter.HomeAdapter
@@ -40,7 +37,6 @@ import retrofit2.Response
 class HomeFragment : BaseFragment() {
 
     private var rvHome: RecyclerView? = null
-    private var ref: DatabaseReference? = null
     private var mAllData: AllData? = null
 
     @Suppress("PrivatePropertyName")
@@ -108,21 +104,6 @@ class HomeFragment : BaseFragment() {
             override fun onFailure(call: Call<AllData>, t: Throwable) {
                 Log.d("response", "fail!!")
             }
-
         })
-//        ref = FirebaseDatabase.getInstance().reference.child("HomeData").child("CampingData")
-//        val postListener = object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                Log.e("Jason","Home")
-//                val adapter = mOwnActivity?.let {
-//                    HomeAdapter(it,fragmentManager)
-//                 }
-//                rvHome?.adapter = adapter
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//            }
-//        }
-//        ref?.addValueEventListener(postListener)
     }
 }
