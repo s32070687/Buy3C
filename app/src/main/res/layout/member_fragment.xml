@@ -1,13 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:text="會員"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints" />
+    <RelativeLayout
+        android:visibility="visible"
+        android:id="@+id/rl_logout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@."
+            android:maxLines="1"
+            android:singleLine="true"
+            android:background="@drawable/bg_stroke_corner"
+            android:hint="@string/member_edit_acc"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/et_account"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp" />
+
+        <EditText
+            android:inputType="textPassword"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@."
+            android:maxLines="1"
+            android:singleLine="true"
+            android:background="@drawable/bg_stroke_corner"
+            android:hint="@string/member_edit_psw"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/et_account"
+            android:id="@+id/et_password"
+            android:layout_width="200dp"
+            android:layout_height="50dp"/>
+
+        <CheckBox
+            android:textStyle="bold"
+            android:id="@+id/cb_login"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/member_check_box"
+            android:layout_alignLeft="@+id/et_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_password"
+            android:layout_marginTop="12dp" />
+
+        <Button
+            android:id="@+id/bt_login"
+            android:textStyle="bold"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/color_white"
+            android:text="@string/member_login"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/cb_login"
+            android:layout_centerHorizontal="true"
+            android:layout_width="200dp"
+            android:layout_height="50dp"/>
+
+        <Button
+            android:layout_marginBottom="15dp"
+            android:id="@+id/bt_register"
+            android:textStyle="bold"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/color_white"
+            android:text="@string/member_register"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="200dp"
+            android:layout_height="50dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rl_welcome"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/tv_welcome"
+                android:layout_centerVertical="true"
+                android:background="@color/colorPrimaryDark"
+                android:layout_width="100dp"
+                android:layout_height="1dp"/>
+
+            <TextView
+                android:id="@+id/tv_welcome"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/member_welcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/tv_welcome"
+                android:layout_centerVertical="true"
+                android:background="@color/colorPrimaryDark"
+                android:layout_width="100dp"
+                android:layout_height="1dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_name"
+            android:layout_below="@+id/rl_welcome"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_toLeftOf="@+id/view_center"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <TextView
+                    android:gravity="left|center_vertical"
+                    android:ellipsize="end"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/tv_user_name"
+                    android:layout_marginRight="100dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"/>
+
+            </RelativeLayout>
+
+
+            <View
+                android:background="@color/colorPrimaryDark"
+                android:id="@+id/view_center"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/member_welcome"
+                android:layout_width="1dp"
+                android:layout_height="50dp"/>
+
+            <RelativeLayout
+                android:layout_toRightOf="@+id/view_center"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <Button
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/member_logout"
+                    android:background="@drawable/bg_stroke_corner"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/bt_logout"
+                    android:layout_marginRight="100dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="@string/member_also_like"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/rl_name"
+            android:id="@+id/tv_also_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_also_like"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tv_also_like"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

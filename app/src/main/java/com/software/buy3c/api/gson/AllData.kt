@@ -18,7 +18,8 @@ class AllData {
     var HomeData: HomeData? = null
     var HotSaleData: ArrayList<ProdData>? = null
     var HotCampingData: ArrayList<ProdData>? = null
-    var MemberData: MemberData? = null
+    var MemberData: ArrayList<MemberData>? = null
+    var PromotionData: ArrayList<ProdData>? = null
 }
 class HomeData {
     var CampingData: ArrayList<ProdData>? = null
@@ -37,5 +38,8 @@ class ProdData : Serializable {
 }
 
 class MemberData {
-
+    var acc: String? = null
+    var psw: String? = null
+    var name: String? = null
+    var proData: ArrayList<ProdData>? = null
 }

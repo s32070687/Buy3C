@@ -1,6 +1,7 @@
 package com.software.buy3c.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,8 +21,11 @@ import com.software.buy3c.R
 import com.software.buy3c.api.ApiClientBuilder
 import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.api.gson.ProdData
+import com.software.buy3c.ui.activity.ShoppingCarActivity
 import com.software.buy3c.ui.adapter.HotCampingAdapter
 import com.software.buy3c.ui.adapter.HotSaleAdapter
+import com.software.buy3c.util.Constants
+import com.software.buy3c.util.Utility
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -73,20 +78,23 @@ class HotCampingFragment : BaseFragment() {
         rvHotCamping?.adapter = mAdapter
         bt = view.findViewById(R.id.bt)
         bt?.setOnClickListener {
-//            ref?.setValue(setData4())
+//            ref?.setValue(setData5())
         }
     }
 
     private fun getData() {
+        showProgressDialog()
         val call = ApiClientBuilder.createApiClient().getAllData()
         call.enqueue(object : Callback<AllData> {
 
             override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
+                closeProgressDialog()
                 val data = response.body()
                 data?.HotCampingData?.let { mAdapter?.setData(it) }
             }
 
             override fun onFailure(call: Call<AllData>, t: Throwable) {
+                closeProgressDialog()
                 Log.d("response", "${t.message}")
             }
         })
@@ -115,7 +123,16 @@ class HotCampingFragment : BaseFragment() {
             val btnActionCar = actionbar.findViewById<ImageView>(R.id.iv_shopping_car)
             btnActionCar.visibility = View.VISIBLE
             btnActionCar.setOnClickListener {
-                Log.e("Jason","HotCamping 購物車 ")
+                val intent = Intent()
+                mOwnActivity?.let { it1 ->
+                    val dataString = Utility.getStringValueForKey(it1, Constants.LOGIN_DATA)
+                    if (dataString.isNotEmpty()) {
+                        intent.setClass(it1, ShoppingCarActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(it1, "請先登入會員", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -126,7 +143,8 @@ class HotCampingFragment : BaseFragment() {
 //        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HomeData").child("CampingData")
 //        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HomeData").child("ProdData")
 //        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HotSaleData")
-        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HotCampingData")
+//        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("HotCampingData")
+//        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("PromotionData")
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.e("Jason","Hot")
@@ -1075,5 +1093,152 @@ class HotCampingFragment : BaseFragment() {
         mData?.add(data5)
 
         return mData!!
+    }
+
+    //ProdDat
+    private fun setData5(): ArrayList<ProdData> {
+        //主機
+        val data1 = ProdData()
+        data1.name = "Creator P100X 10SE-252TW▼輕薄的品牌主機▼"
+        data1.id = 1
+        data1.imageUrl = "https://b.ecimg.tw/items/DSAA6IA900AUX1G/000001_1599467197.jpg"
+        data1.price = 100000
+        data1.discount = 99900
+        data1.detail = "《 超狂特色》\n" +
+                "★搭載最新第10代英特爾 酷睿i9-10900K處理器\n" +
+                "★搭載MSI GeForce RTX 2080 SUPER 8GB GDDR6顯示卡\n" +
+                "★採用DDR4 Boost技術的雙通道內存：提供最流暢，最快速的即時預覽\n" +
+                "★內建Thunderbolt 3連接阜\n" +
+                "★內建Wi-Fi6，速度高達2.4Gbps\n" +
+                "★支援2x M.2 PCI-e SSD、2x2.5“SATA儲存裝置\n" +
+                "★支援5K2K視覺體驗\n" +
+                "★支援專業音質的音頻增強技術\n" +
+                "★獨家軟體– Creator Center、Creator OSD\n" +
+                "★輕薄的品牌主機，體積僅10.36升"
+        data1.type = 0
+
+        val data2 = ProdData()
+        data2.name = "Creator P100A 10SI-256TW▼輕薄的品牌主機▼"
+        data2.id = 2
+        data2.imageUrl = "https://d.ecimg.tw/items/DSAA6IA900AUXLH/000001_1599473089.jpg"
+        data2.price = 45000
+        data2.discount = 43900
+        data2.detail = "《 超狂特色》\n" +
+                "★搭載最新第10代英特爾 酷睿i5-10400F處理器\n" +
+                "★搭載MSI GeForce GTX 1660 SUPER 6GB GDDR6顯示卡\n" +
+                "★採用DDR4 Boost技術的雙通道內存：提供最流暢，最快速的即時預覽\n" +
+                "★內建Thunderbolt 3連接阜\n" +
+                "★內建Wi-Fi6，速度高達2.4Gbps\n" +
+                "★支援2x M.2 PCI-e SSD、2x2.5“SATA儲存裝置\n" +
+                "★支援5K2K視覺體驗\n" +
+                "★支援專業音質的音頻增強技術\n" +
+                "★獨家軟體– Creator Center、Creator OSD\n" +
+                "★輕薄的品牌主機，體積僅10.36升"
+        data2.type = 0
+
+        val data6 = ProdData()
+        data6.name = "BenQ 27型IPS玩色螢幕GW2780Plus"
+        data6.id = 6
+        data6.imageUrl = "https://e.ecimg.tw/items/DSABF2A9009WX9E/000001_1597022612.jpg"
+        data6.price = 5100
+        data6.discount = 4988
+        data6.detail = "★內建玩色模式-大幅提升辨色力★\n" +
+                "IPS 178度廣視角面板\n" +
+                "1920x1080 FHD解析度\n" +
+                "支援D-Sub/HDMI 1.4/DisplayPort介面\n" +
+                "光智慧技術\n" +
+                "德國萊茵低藍光、不閃屏雙認證\n" +
+                "四段式低藍光模式\n" +
+                "內建雙喇叭(2W)\n" +
+                "輕薄全美型\n" +
+                "可調整傾斜\n" +
+                "支援壁掛功能\n" +
+                "3年保固\n"
+        data6.type = 1
+
+        val data7 = ProdData()
+        data7.name = "LG 22型AH-IPS電競螢幕 (22MP58VQ-P)"
+        data7.id = 7
+        data7.imageUrl = "https://e.ecimg.tw/items/DSAB07A9006V140/000001_1600136434.jpg"
+        data7.price = 3000
+        data7.discount = 2888
+        data7.detail = "簡約時尚輕薄機身設計\n" +
+                "電競模式：黑暗場景穩定器\n" +
+                "AH-IPS 先進高效能顯示面板\n" +
+                "低藍光不閃爍，德國 TUV 南德認證\n" +
+                "LG 專屬軟體：OSC 滑鼠控制選單功能\n" +
+                "搖捍式選單快速控制鍵"
+        data7.type = 1
+
+        val data11 = ProdData()
+        data11.name = "Razer Cynosa Lite 薩諾狼蛛Lite版鍵盤"
+        data11.id = 11
+        data11.imageUrl = "https://d.ecimg.tw/items/DCAH8XA900AOCSG/000001_1603331958.jpg"
+        data11.price = 1500
+        data11.discount = 1490
+        data11.detail = "● 柔軟緩衝的電競級按鍵\n" +
+                "● 10鍵齊發不衝突防鬼鍵\n" +
+                "● 1000Hz超快輪詢率\n" +
+                "● 防潑水耐用設計"
+        data11.type = 2
+
+        val data12 = ProdData()
+        data12.name = "羅技 MK315 無線靜音鍵盤滑鼠"
+        data12.id = 12
+        data12.imageUrl = "https://d.ecimg.tw/items/DCAH86A9009JR8H/000001_1591668429.jpg"
+        data12.price = 1000
+        data12.discount = 949
+        data12.detail = "● 無聲鍵盤與滑鼠\n" +
+                "● 舒適的打字與點按\n" +
+                "● 耐用的鍵盤滑鼠組合\n" +
+                "● 可靠的無線連線"
+        data12.type = 2
+
+        val data16 = ProdData()
+        data16.name = "ASUS VivoBook X413FA-0051K10210U 酷玩黑"
+        data16.id = 16
+        data16.imageUrl = "https://d.ecimg.tw/items/DHAFKJA900ANC79/000001_1601256101.jpg"
+        data16.price = 22000
+        data16.discount = 21900
+        data16.detail = "LCD尺寸：14\"FHD IPS寬螢幕 (LED) 四邊窄邊框設計\n" +
+                "處理器：Intel® Core™ i5-10210U Processor 1.6 GHz\n" +
+                "記憶體：8GB*1 DDR4\n" +
+                "硬碟：512GB M.2 NVMe™ PCIe® 3.0 SSD\n" +
+                "網路：Wi-Fi 6(Gig+)(802.11ax)+Bluetooth 5.0 (Dual band) 2*2\n" +
+                "重量：1.4KG\n" +
+                "特色：USB 3.2 Type C、178度廣視角、87%屏佔比\n" +
+                "作業系統： 64 Bits Windows 10 Home"
+        data16.type = 3
+
+        val data17 = ProdData()
+        data17.name = "ASUS S14 S432FL-0082E8265U 超能綠"
+        data17.id = 17
+        data17.imageUrl = "https://d.ecimg.tw/items/DHAFJAA900AIWC4/000001_1603329702.jpg"
+        data17.price = 24000
+        data17.discount = 23900
+        data17.detail = "LCD尺寸：15.6\" FHD 螢幕 四邊窄邊框設計\n" +
+                "處理器：Intel® Core™ i5-8265U Processor 1.6 GHz\n" +
+                "記憶體：LPDDR 3 2133 8G (Max 8G)\n" +
+                "顯卡：Nvidia MX 250 2G獨顯\n" +
+                "硬碟：PCIEG3x2 NVME 512GB M.2 SSD\n" +
+                "網路：Wi-Fi 5(802.11ac)+Bluetooth 4.2 (Dual band) 2*2\n" +
+                "重量：1.45 KG\n" +
+                "特色：含背光KB、USB3.1 Type C、HDMI\n" +
+                "作業系統： 64 Bits Windows 10 Home"
+        data17.type = 3
+
+        mData1?.add(data1)
+        mData1?.add(data2)
+
+        mData1?.add(data6)
+        mData1?.add(data7)
+
+        mData1?.add(data11)
+        mData1?.add(data12)
+
+        mData1?.add(data16)
+        mData1?.add(data17)
+
+        return mData1!!
     }
 }

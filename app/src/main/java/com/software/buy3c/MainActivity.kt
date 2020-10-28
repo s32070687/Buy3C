@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.software.buy3c.ui.fragment.HomeFragment
+import com.software.buy3c.util.Constants
+import com.software.buy3c.util.Utility
 
 class MainActivity : AppCompatActivity() {
 
@@ -75,7 +77,13 @@ class MainActivity : AppCompatActivity() {
         builder.setTitle(R.string.app_name)
         builder.setMessage("確定離開Buy3C嗎?")
         builder.setPositiveButton("確定",
-            DialogInterface.OnClickListener { _, _ -> this.finish() })
+            DialogInterface.OnClickListener { _, _ ->
+                val isLoginStatus = Utility.getStringValueForKey(this, Constants.REMEMBER_LOGIN)
+                if (isLoginStatus == "false") {
+                    Utility.saveStringValueForKey(this, Constants.LOGIN_DATA, null)
+                }
+                this.finish()
+            })
         builder.setNegativeButton("取消",
             DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
         val alert: AlertDialog = builder.create()

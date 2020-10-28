@@ -1,12 +1,14 @@
 package com.software.buy3c.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +18,11 @@ import com.software.buy3c.api.ApiClientBuilder
 import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.ui.FragmentPageManager
+import com.software.buy3c.ui.activity.RegisterActivity
+import com.software.buy3c.ui.activity.ShoppingCarActivity
 import com.software.buy3c.ui.adapter.HomeAdapter
+import com.software.buy3c.util.Constants
+import com.software.buy3c.util.Utility
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -79,7 +85,17 @@ class HomeFragment : BaseFragment() {
             val btnActionCar = actionbar.findViewById<ImageView>(R.id.iv_shopping_car)
             btnActionCar.visibility = View.VISIBLE
             btnActionCar.setOnClickListener {
-                Log.e("Jason","Home 購物車 ")
+                val intent = Intent()
+                mOwnActivity?.let { it1 ->
+                    val dataString = Utility.getStringValueForKey(it1, Constants.LOGIN_DATA)
+                    if (dataString.isNotEmpty()) {
+                        Log.e("Jason","$dataString dataString")
+                        intent.setClass(it1, ShoppingCarActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(it1, "請先登入會員", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -90,10 +106,12 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun getData() {
+        showProgressDialog()
         val call = ApiClientBuilder.createApiClient().getAllData()
         call.enqueue(object : Callback<AllData> {
 
             override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
+                closeProgressDialog()
                 mAllData = response.body()
                 val adapter = mOwnActivity?.let {
                     mAllData?.HomeData?.let { data -> HomeAdapter(it, data, fragmentManager) }
@@ -102,6 +120,7 @@ class HomeFragment : BaseFragment() {
             }
 
             override fun onFailure(call: Call<AllData>, t: Throwable) {
+                closeProgressDialog()
                 Log.d("response", "${t.message}")
             }
         })

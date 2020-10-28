@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.software.buy3c.MyApplication
 
 /**
  * #標題
@@ -55,6 +56,22 @@ open class BaseFragment : Fragment(), FragmentBackHandler {
             }
         }
         super.onPause()
+    }
+
+    protected fun showProgressDialog() {
+        mOwnActivity?.let {
+            if (!it.isFinishing) {
+                (it.application as MyApplication).showProgressDialog(it)
+            }
+        }
+    }
+
+    protected fun closeProgressDialog() {
+        mOwnActivity?.let {
+            if (!it.isFinishing) {
+                (it.application as MyApplication).closeProgressDialog()
+            }
+        }
     }
 
     protected fun isSafeFragment(frag: Fragment): Boolean {
