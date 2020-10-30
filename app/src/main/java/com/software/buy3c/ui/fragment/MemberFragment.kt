@@ -11,9 +11,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
 import com.google.gson.reflect.TypeToken
 import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.ui.FragmentPageManager
@@ -21,18 +19,14 @@ import com.software.buy3c.R
 import com.software.buy3c.api.ApiClientBuilder
 import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.api.gson.MemberData
-import com.software.buy3c.api.gson.ProdData
-import com.software.buy3c.ui.activity.ProdItemActivity
 import com.software.buy3c.ui.activity.RegisterActivity
 import com.software.buy3c.ui.activity.ShoppingCarActivity
 import com.software.buy3c.ui.adapter.AlsoLikeAdapter
-import com.software.buy3c.ui.adapter.HotSaleAdapter
 import com.software.buy3c.util.Constants
 import com.software.buy3c.util.Utility
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
 
 /**
  * #標題
@@ -207,14 +201,16 @@ class MemberFragment : BaseFragment() {
 
     private fun checkAcc(): MemberData? {
         var accData: MemberData? = null
-        for (i in 0 until mAllData!!.MemberData?.size!!) {
-            if (mAllData!!.MemberData?.get(i)?.acc == etAcc?.text.toString()) {
-                mAllData!!.MemberData?.get(i)?.let {
-                    accData = it
+        mAllData?.MemberData?.let {
+            for (i in 0 until it.size) {
+                if (it[i].acc == etAcc?.text.toString()) {
+                    it[i].let { data ->
+                        accData = data
+                    }
+                    break
+                } else {
+                    accData = null
                 }
-                break
-            } else {
-                accData = null
             }
         }
         return accData

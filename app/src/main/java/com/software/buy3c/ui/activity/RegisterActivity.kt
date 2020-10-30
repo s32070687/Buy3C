@@ -86,6 +86,7 @@ class RegisterActivity : AppCompatActivity() {
         call.enqueue(object : Callback<AllData> {
 
             override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
+                Log.e("Jason","Reg Data")
                 mAllData = response.body()
             }
 
@@ -124,33 +125,40 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this, "註冊成功", Toast.LENGTH_SHORT).show()
             toMember(memberData)
         } else {
-            for (i in 0 until mAllData!!.MemberData?.size!!) {
-                if (mAllData!!.MemberData?.get(i)?.acc == etAcc?.text.toString()) {
-                    Toast.makeText(this, "已有相同的帳號", Toast.LENGTH_SHORT).show()
-                    break
-                } else {
-                    ref = FirebaseDatabase.getInstance().reference.child("AllData").child("MemberData")
-                    mData = ArrayList<MemberData>()
-                    mProdData = ArrayList<ProdData>()
-                    val memberData = MemberData()
-                    memberData.acc = etAcc?.text.toString()
-                    memberData.psw = etPsw?.text.toString()
-                    memberData.name = etName?.text.toString()
-//                    val childUpdates = hashMapOf<String, Any>(
-//                        "MemberData" to memberData
-//                    )
+            if (checkAcc()) {
+                Toast.makeText(this, "已有相同的帳號", Toast.LENGTH_SHORT).show()
+            } else {
+                ref = FirebaseDatabase.getInstance().reference.child("AllData").child("MemberData")
+                mData = ArrayList<MemberData>()
+                mData = mAllData!!.MemberData
+                mProdData = ArrayList<ProdData>()
+                val memberData = MemberData()
+                val prodData = ProdData()
+                memberData.acc = etAcc?.text.toString()
+                memberData.psw = etPsw?.text.toString()
+                memberData.name = etName?.text.toString()
+                memberData.proData?.add(prodData)
+                mData?.add(memberData)
 
-                    ref?.setValue(memberData)
-                    Toast.makeText(this, "註冊成功", Toast.LENGTH_SHORT).show()
-                    toMember(memberData)
-                    break
-                }
+                ref?.setValue(mData)
+                Toast.makeText(this, "註冊成功", Toast.LENGTH_SHORT).show()
+                toMember(memberData)
             }
         }
     }
 
+    private fun checkAcc(): Boolean {
+        var isRepeat = false
+        for (i in 0 until mAllData!!.MemberData?.size!!) {
+            if (mAllData!!.MemberData?.get(i)?.acc == etAcc?.text.toString()) {
+                isRepeat = true
+            }
+        }
+
+        return isRepeat
+    }
+
     private fun toMember(data: MemberData) {
-        Log.e("Jason","dada")
         Utility.saveStringValueForKey(this, Constants.LOGIN_DATA, Utility.convertGsonToString(data))
         finish()
     }
