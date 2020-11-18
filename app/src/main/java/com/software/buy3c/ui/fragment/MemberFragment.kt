@@ -84,6 +84,7 @@ class MemberFragment : BaseFragment() {
         val dataString = Utility.getStringValueForKey(mOwnActivity,Constants.LOGIN_DATA)
         val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
         getData()
+        Log.e("Jason","$resultObj mem")
         if (resultObj != null) {
             setLogin(resultObj)
         } else {

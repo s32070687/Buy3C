@@ -94,7 +94,6 @@ class RegisterActivity : AppCompatActivity() {
     private fun startRegister() {
         if (MyApplication.mAllData?.MemberData == null) {
             ref = FirebaseDatabase.getInstance().reference.child("AllData").child("MemberData")
-//            mData = ArrayList<MemberData>()
             mProdData = ArrayList<ProdData>()
             val memberData = MemberData()
             val prodData = ProdData()

@@ -11,8 +11,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.reflect.TypeToken
+import com.software.buy3c.MyApplication
 import com.software.buy3c.R
+import com.software.buy3c.api.gson.MemberData
 import com.software.buy3c.api.gson.ProdData
+import com.software.buy3c.util.Constants
+import com.software.buy3c.util.Utility
 
 /**
  * #標題
@@ -28,6 +35,7 @@ import com.software.buy3c.api.gson.ProdData
 class ShoppingCarAdapter (private val context: Context) : RecyclerView.Adapter<ShoppingCarAdapter.ViewHolder>() {
 
     var mData = ArrayList<ProdData>()
+    var ref: DatabaseReference? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingCarAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.shopping_car_item, parent, false)
@@ -47,7 +55,19 @@ class ShoppingCarAdapter (private val context: Context) : RecyclerView.Adapter<S
         notifyDataSetChanged()
     }
 
-    fun removeData(position: Int) {
+    fun removeItemData(position: Int) {
+        val dataString = Utility.getStringValueForKey(context, Constants.LOGIN_DATA)
+        val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
+        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("MemberData")
+        for (i in 0 until MyApplication.mAllData?.MemberData?.size!!) {
+            if (resultObj?.acc == MyApplication.mAllData?.MemberData?.get(i)?.acc) {
+                MyApplication.mAllData?.MemberData!![i].proData?.removeAt(position)
+                resultObj?.proData?.removeAt(position)
+                Utility.saveStringValueForKey(context, Constants.LOGIN_DATA, Utility.convertGsonToString(resultObj))
+                break
+            }
+        }
+        ref?.setValue(MyApplication.mAllData?.MemberData)
         mData.removeAt(position)
         notifyItemRemoved(position)
         notifyDataSetChanged()
@@ -77,7 +97,7 @@ class ShoppingCarAdapter (private val context: Context) : RecyclerView.Adapter<S
                 builder.setMessage("確定取消商品嗎?")
                 builder.setPositiveButton("確定",
                     DialogInterface.OnClickListener { _, _ ->
-                        removeData(position)
+                        removeItemData(position)
                     })
                 builder.setNegativeButton("取消",
                     DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })

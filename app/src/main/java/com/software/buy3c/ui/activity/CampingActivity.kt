@@ -49,30 +49,14 @@ class CampingActivity : AppCompatActivity() {
     private var btADD: Button? = null
     private var campingParam: ProdData? = null
     private var ref: DatabaseReference? = null
-//    private var mAllData: AllData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camping)
-//        getData()
         setBar()
         setView()
         setData()
     }
-
-//    private fun getData() {
-//        val call = ApiClientBuilder.createApiClient().getAllData()
-//        call.enqueue(object : Callback<AllData> {
-//
-//            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
-//                mAllData = response.body()
-//            }
-//
-//            override fun onFailure(call: Call<AllData>, t: Throwable) {
-//                Log.d("response", "${t.message}")
-//            }
-//        })
-//    }
 
     private fun setBar() {
         this.supportActionBar?.setDisplayHomeAsUpEnabled(false)

@@ -1,6 +1,8 @@
 package com.software.buy3c.ui.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.reflect.TypeToken
+import com.software.buy3c.MyApplication
 import com.software.buy3c.R
 import com.software.buy3c.api.gson.MemberData
 import com.software.buy3c.api.gson.ProdData
@@ -39,6 +44,7 @@ class ShoppingCarActivity : AppCompatActivity() {
     private var rvProdList: RecyclerView? = null
     private var mAdapter: ShoppingCarAdapter? = null
     private var btCheckout: Button? = null
+    private var ref: DatabaseReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +79,37 @@ class ShoppingCarActivity : AppCompatActivity() {
         mAdapter = ShoppingCarAdapter(this)
         rvProdList?.layoutManager = LinearLayoutManager(this)
         rvProdList?.adapter = mAdapter
+
+        btCheckout?.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(R.string.app_name)
+            builder.setMessage("確定結帳嗎?")
+            builder.setPositiveButton("確定",
+                DialogInterface.OnClickListener { _, _ ->
+                    update()
+                    Toast.makeText(this, "結帳完成", Toast.LENGTH_SHORT).show()
+                })
+            builder.setNegativeButton("取消",
+                DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
+            val alert: AlertDialog = builder.create()
+            alert.show()
+        }
+    }
+
+    private fun update() {
+        ref = FirebaseDatabase.getInstance().reference.child("AllData").child("MemberData")
+        val dataString = Utility.getStringValueForKey(this, Constants.LOGIN_DATA)
+        val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
+        for (i in 0 until MyApplication.mAllData?.MemberData?.size!!) {
+            if (resultObj?.acc == MyApplication.mAllData?.MemberData?.get(i)?.acc) {
+                MyApplication.mAllData?.MemberData!![i].proData?.clear()
+                resultObj?.proData?.clear()
+                Utility.saveStringValueForKey(this, Constants.LOGIN_DATA, Utility.convertGsonToString(resultObj))
+                break
+            }
+        }
+        ref?.setValue(MyApplication.mAllData?.MemberData)
+        resultObj?.proData?.let { mAdapter?.setData(it) }
     }
 
     @SuppressLint("SetTextI18n")
