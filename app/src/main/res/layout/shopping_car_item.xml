@@ -26,6 +26,7 @@
                 android:layout_height="100dp"/>
 
             <TextView
+                android:layout_toLeftOf="@+id/iv_cancel"
                 android:ellipsize="end"
                 android:textColor="@color/color_black"
                 android:textSize="18sp"
@@ -39,6 +40,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:layout_toLeftOf="@+id/iv_cancel"
                 android:textColor="@color/color_cc1e05"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -47,6 +49,15 @@
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/iv_shopping_car"
                 android:layout_alignBottom="@+id/iv_shopping_car"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:layout_marginRight="5dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/iv_cancel"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

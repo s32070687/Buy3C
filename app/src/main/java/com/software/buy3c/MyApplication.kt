@@ -7,6 +7,7 @@ import android.graphics.Point
 import android.view.WindowManager
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.ui.LoadingDialog
 
 @Suppress("DEPRECATION")
@@ -16,6 +17,7 @@ class MyApplication : Application() {
         var screenWidth: Int = 0
         var screenHeight: Int = 0
         var ref: DatabaseReference? = null
+        var mAllData: AllData? = null
     }
     private var app: MyApplication? = null
     private var mProgressDialog: LoadingDialog? = null

@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.reflect.TypeToken
+import com.software.buy3c.MyApplication
 import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.ui.FragmentPageManager
 import com.software.buy3c.R
@@ -41,7 +42,6 @@ import retrofit2.Response
  */
 class MemberFragment : BaseFragment() {
 
-    private var mAllData: AllData? = null
     //未登入
     private var rlLogout: RelativeLayout? = null
     private var etAcc: EditText? = null
@@ -63,7 +63,6 @@ class MemberFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.e("Jason","mem onCreateView")
         return inflater.inflate(R.layout.member_fragment, container, false)
     }
 
@@ -83,10 +82,10 @@ class MemberFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         val dataString = Utility.getStringValueForKey(mOwnActivity,Constants.LOGIN_DATA)
-        if (dataString != null) {
-            getData()
-            val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
-            resultObj?.let { setLogin(it) }
+        val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
+        getData()
+        if (resultObj != null) {
+            setLogin(resultObj)
         } else {
             setLogOut()
         }
@@ -113,7 +112,8 @@ class MemberFragment : BaseFragment() {
                 val intent = Intent()
                 mOwnActivity?.let { it1 ->
                     val dataString = Utility.getStringValueForKey(it1,Constants.LOGIN_DATA)
-                    if (dataString.isNotEmpty()) {
+                    val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
+                    if (resultObj != null) {
                         intent.setClass(it1, ShoppingCarActivity::class.java)
                         startActivity(intent)
                     } else {
@@ -162,22 +162,9 @@ class MemberFragment : BaseFragment() {
     }
 
     private fun getData() {
-        showProgressDialog()
-        val call = ApiClientBuilder.createApiClient().getAllData()
-        call.enqueue(object : Callback<AllData> {
-            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
-                closeProgressDialog()
-                mAllData = response.body()
-                mAllData?.PromotionData?.let {
-                    mAdapter?.setData(it)
-                }
-            }
-
-            override fun onFailure(call: Call<AllData>, t: Throwable) {
-                closeProgressDialog()
-                Log.d("response", "${t.message}")
-            }
-        })
+        MyApplication.mAllData?.PromotionData?.let { data ->
+            mAdapter?.setData(data)
+        }
     }
 
     private fun checkLogin() {
@@ -201,7 +188,7 @@ class MemberFragment : BaseFragment() {
 
     private fun checkAcc(): MemberData? {
         var accData: MemberData? = null
-        mAllData?.MemberData?.let {
+        MyApplication.mAllData?.MemberData?.let {
             for (i in 0 until it.size) {
                 if (it[i].acc == etAcc?.text.toString()) {
                     it[i].let { data ->

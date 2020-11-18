@@ -3,6 +3,7 @@ package com.software.buy3c
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -18,9 +19,14 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.software.buy3c.api.ApiClientBuilder
+import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.ui.fragment.HomeFragment
 import com.software.buy3c.util.Constants
 import com.software.buy3c.util.Utility
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         database = Firebase.database.reference
-        setView()
+        getAllData()
     }
 
     private fun setView() {
@@ -72,6 +78,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getAllData() {
+        val call = ApiClientBuilder.createApiClient().getAllData()
+        call.enqueue(object : Callback<AllData> {
+            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
+                MyApplication.mAllData = response.body()
+                setView()
+            }
+
+            override fun onFailure(call: Call<AllData>, t: Throwable) {
+                Log.d("response", "${t.message}")
+            }
+        })
+    }
+
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.app_name)
@@ -88,5 +108,13 @@ class MainActivity : AppCompatActivity() {
             DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
         val alert: AlertDialog = builder.create()
         alert.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val isLoginStatus = Utility.getStringValueForKey(this, Constants.REMEMBER_LOGIN)
+        if (isLoginStatus == "false") {
+            Utility.saveStringValueForKey(this, Constants.LOGIN_DATA, null)
+        }
     }
 }

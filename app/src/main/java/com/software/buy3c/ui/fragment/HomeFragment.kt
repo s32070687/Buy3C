@@ -13,9 +13,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.reflect.TypeToken
+import com.software.buy3c.MyApplication
 import com.software.buy3c.R
 import com.software.buy3c.api.ApiClientBuilder
 import com.software.buy3c.api.gson.AllData
+import com.software.buy3c.api.gson.MemberData
 import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.ui.FragmentPageManager
 import com.software.buy3c.ui.activity.RegisterActivity
@@ -43,7 +46,6 @@ import retrofit2.Response
 class HomeFragment : BaseFragment() {
 
     private var rvHome: RecyclerView? = null
-    private var mAllData: AllData? = null
 
     @Suppress("PrivatePropertyName")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,8 +90,8 @@ class HomeFragment : BaseFragment() {
                 val intent = Intent()
                 mOwnActivity?.let { it1 ->
                     val dataString = Utility.getStringValueForKey(it1, Constants.LOGIN_DATA)
-                    if (dataString.isNotEmpty()) {
-                        Log.e("Jason","$dataString dataString")
+                    val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
+                    if (resultObj != null) {
                         intent.setClass(it1, ShoppingCarActivity::class.java)
                         startActivity(intent)
                     } else {
@@ -106,23 +108,11 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun getData() {
-        showProgressDialog()
-        val call = ApiClientBuilder.createApiClient().getAllData()
-        call.enqueue(object : Callback<AllData> {
-
-            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
-                closeProgressDialog()
-                mAllData = response.body()
-                val adapter = mOwnActivity?.let {
-                    mAllData?.HomeData?.let { data -> HomeAdapter(it, data, fragmentManager) }
-                 }
-                rvHome?.adapter = adapter
+        MyApplication.mAllData?.HomeData?.let {data ->
+            val adapter = mOwnActivity?.let {
+                HomeAdapter(it, data, fragmentManager)
             }
-
-            override fun onFailure(call: Call<AllData>, t: Throwable) {
-                closeProgressDialog()
-                Log.d("response", "${t.message}")
-            }
-        })
+            rvHome?.adapter = adapter
+        }
     }
 }

@@ -1,22 +1,18 @@
 package com.software.buy3c.ui.adapter
 
+import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
+import android.content.DialogInterface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.software.buy3c.R
 import com.software.buy3c.api.gson.ProdData
-import com.software.buy3c.ui.FragmentPageManager
-import com.software.buy3c.ui.activity.CampingActivity
-import com.software.buy3c.ui.activity.ProdItemActivity
 
 /**
  * #標題
@@ -51,11 +47,17 @@ class ShoppingCarAdapter (private val context: Context) : RecyclerView.Adapter<S
         notifyDataSetChanged()
     }
 
+    fun removeData(position: Int) {
+        mData.removeAt(position)
+        notifyItemRemoved(position)
+        notifyDataSetChanged()
+    }
+
     inner class ViewHolder(val v: View) : RecyclerView.ViewHolder(v) {
-        private val rlShoppingItem = v.findViewById<RelativeLayout>(R.id.rl_shopping_item)
         private val ivShopping = v.findViewById<ImageView>(R.id.iv_shopping_car)
         private val tvShoppingName = v.findViewById<TextView>(R.id.tv_shopping_name)
         private val tvShoppingPrice = v.findViewById<TextView>(R.id.tv_shopping_price)
+        private val ivCancel = v.findViewById<ImageView>(R.id.iv_cancel)
 
         fun bind(position: Int, mData: ArrayList<ProdData>) {
             val data = mData[position]
@@ -69,12 +71,20 @@ class ShoppingCarAdapter (private val context: Context) : RecyclerView.Adapter<S
             tvShoppingName.text = data.name
             tvShoppingPrice.text = data.discount.toString()
 
-            rlShoppingItem.setOnClickListener {
-                val intent = Intent()
-                intent.setClass(context, ProdItemActivity::class.java)
-                intent.putExtra("prodData", data)
-                context.startActivity(intent)
+            ivCancel.setOnClickListener {
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle(R.string.app_name)
+                builder.setMessage("確定取消商品嗎?")
+                builder.setPositiveButton("確定",
+                    DialogInterface.OnClickListener { _, _ ->
+                        removeData(position)
+                    })
+                builder.setNegativeButton("取消",
+                    DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
+                val alert: AlertDialog = builder.create()
+                alert.show()
             }
+
         }
     }
 }

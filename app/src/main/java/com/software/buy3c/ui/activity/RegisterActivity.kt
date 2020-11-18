@@ -10,6 +10,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.software.buy3c.MyApplication
 import com.software.buy3c.R
 import com.software.buy3c.api.ApiClientBuilder
 import com.software.buy3c.api.gson.AllData
@@ -39,8 +40,6 @@ class RegisterActivity : AppCompatActivity() {
     private var etName: EditText? = null
     private var btRegister: Button? = null
     private var ref: DatabaseReference? = null
-    private var mAllData: AllData? = null
-    private var mData: ArrayList<MemberData>? = null
     private var mProdData: ArrayList<ProdData>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +47,6 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
         setBar()
         setView()
-        getMemberData()
     }
 
     private fun setBar() {
@@ -81,21 +79,6 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun getMemberData() {
-        val call = ApiClientBuilder.createApiClient().getAllData()
-        call.enqueue(object : Callback<AllData> {
-
-            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
-                Log.e("Jason","Reg Data")
-                mAllData = response.body()
-            }
-
-            override fun onFailure(call: Call<AllData>, t: Throwable) {
-                Log.d("response", "${t.message}")
-            }
-        })
-    }
-
     private fun checkRegister() {
         if (TextUtils.isEmpty(etAcc?.text) || TextUtils.isEmpty(etPsw?.text) || TextUtils.isEmpty(etPswConfirm?.text) || TextUtils.isEmpty(etName?.text)) {
             Toast.makeText(this, "資料需填寫完整", Toast.LENGTH_SHORT).show()
@@ -109,9 +92,9 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun startRegister() {
-        if (mAllData?.MemberData == null) {
+        if (MyApplication.mAllData?.MemberData == null) {
             ref = FirebaseDatabase.getInstance().reference.child("AllData").child("MemberData")
-            mData = ArrayList<MemberData>()
+//            mData = ArrayList<MemberData>()
             mProdData = ArrayList<ProdData>()
             val memberData = MemberData()
             val prodData = ProdData()
@@ -119,9 +102,9 @@ class RegisterActivity : AppCompatActivity() {
             memberData.psw = etPsw?.text.toString()
             memberData.name = etName?.text.toString()
             memberData.proData?.add(prodData)
-            mData!!.add(memberData)
+            MyApplication.mAllData?.MemberData?.add(memberData)
 
-            ref?.setValue(mData)
+            ref?.setValue(MyApplication.mAllData?.MemberData)
             Toast.makeText(this, "註冊成功", Toast.LENGTH_SHORT).show()
             toMember(memberData)
         } else {
@@ -129,8 +112,6 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "已有相同的帳號", Toast.LENGTH_SHORT).show()
             } else {
                 ref = FirebaseDatabase.getInstance().reference.child("AllData").child("MemberData")
-                mData = ArrayList<MemberData>()
-                mData = mAllData!!.MemberData
                 mProdData = ArrayList<ProdData>()
                 val memberData = MemberData()
                 val prodData = ProdData()
@@ -138,9 +119,9 @@ class RegisterActivity : AppCompatActivity() {
                 memberData.psw = etPsw?.text.toString()
                 memberData.name = etName?.text.toString()
                 memberData.proData?.add(prodData)
-                mData?.add(memberData)
+                MyApplication.mAllData?.MemberData?.add(memberData)
 
-                ref?.setValue(mData)
+                ref?.setValue(MyApplication.mAllData?.MemberData)
                 Toast.makeText(this, "註冊成功", Toast.LENGTH_SHORT).show()
                 toMember(memberData)
             }
@@ -149,8 +130,8 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun checkAcc(): Boolean {
         var isRepeat = false
-        for (i in 0 until mAllData!!.MemberData?.size!!) {
-            if (mAllData!!.MemberData?.get(i)?.acc == etAcc?.text.toString()) {
+        for (i in 0 until MyApplication.mAllData?.MemberData?.size!!) {
+            if (MyApplication.mAllData?.MemberData?.get(i)?.acc == etAcc?.text.toString()) {
                 isRepeat = true
             }
         }

@@ -15,11 +15,14 @@ import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.reflect.TypeToken
+import com.software.buy3c.MyApplication
 import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.ui.FragmentPageManager
 import com.software.buy3c.R
 import com.software.buy3c.api.ApiClientBuilder
 import com.software.buy3c.api.gson.AllData
+import com.software.buy3c.api.gson.MemberData
 import com.software.buy3c.api.gson.ProdData
 import com.software.buy3c.ui.activity.ShoppingCarActivity
 import com.software.buy3c.ui.adapter.HomeAdapter
@@ -46,7 +49,6 @@ class HotSaleFragment : BaseFragment() {
     private var tlMain: TabLayout? = null
     private var rvHotSale: RecyclerView? = null
     private var mAdapter: HotSaleAdapter? = null
-    private var mAllData: AllData? = null
     private var mData0: ArrayList<ProdData>? = null
     private var mData1: ArrayList<ProdData>? = null
     private var mData2: ArrayList<ProdData>? = null
@@ -97,7 +99,8 @@ class HotSaleFragment : BaseFragment() {
                 val intent = Intent()
                 mOwnActivity?.let { it1 ->
                     val dataString = Utility.getStringValueForKey(it1, Constants.LOGIN_DATA)
-                    if (dataString.isNotEmpty()) {
+                    val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
+                    if (resultObj != null) {
                         intent.setClass(it1, ShoppingCarActivity::class.java)
                         startActivity(intent)
                     } else {
@@ -159,42 +162,28 @@ class HotSaleFragment : BaseFragment() {
     }
 
     private fun getData() {
-        showProgressDialog()
         mData0 = ArrayList<ProdData>()
         mData1 = ArrayList<ProdData>()
         mData2 = ArrayList<ProdData>()
         mData3 = ArrayList<ProdData>()
-        val call = ApiClientBuilder.createApiClient().getAllData()
-        call.enqueue(object : Callback<AllData> {
-
-            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
-                closeProgressDialog()
-                mAllData = response.body()
-                mAllData?.HotSaleData?.let {
-                    for (i in 0 until it.size) {
-                        when(it[i].type){
-                            0 -> {
-                                mData0?.add(it[i])
-                            }
-                            1 -> {
-                                mData1?.add(it[i])
-                            }
-                            3 -> {
-                                mData3?.add(it[i])
-                            }
-                            4 -> {
-                                mData2?.add(it[i])
-                            }
-                        }
+        MyApplication.mAllData?.HotSaleData?.let { data ->
+            for (i in 0 until data.size) {
+                when(data[i].type){
+                    0 -> {
+                        mData0?.add(data[i])
                     }
-                    mData0?.let { it1 -> mAdapter?.setData(it1) }
+                    1 -> {
+                        mData1?.add(data[i])
+                    }
+                    3 -> {
+                        mData3?.add(data[i])
+                    }
+                    4 -> {
+                        mData2?.add(data[i])
+                    }
                 }
             }
-
-            override fun onFailure(call: Call<AllData>, t: Throwable) {
-                closeProgressDialog()
-                Log.d("response", "${t.message}")
-            }
-        })
+            mData0?.let { it -> mAdapter?.setData(it) }
+        }
     }
 }

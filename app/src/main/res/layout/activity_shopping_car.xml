@@ -18,7 +18,7 @@
         android:textSize="18sp"
         android:textColor="@color/color_white"
         android:text="@string/shopping_car_checkout"
-        android:background="@color/color_cc1e05"
+        android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

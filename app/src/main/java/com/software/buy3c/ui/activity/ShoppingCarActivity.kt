@@ -39,7 +39,6 @@ class ShoppingCarActivity : AppCompatActivity() {
     private var rvProdList: RecyclerView? = null
     private var mAdapter: ShoppingCarAdapter? = null
     private var btCheckout: Button? = null
-    private var prodParam: ProdData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +71,6 @@ class ShoppingCarActivity : AppCompatActivity() {
         btCheckout = findViewById(R.id.bt_checkout)
 
         mAdapter = ShoppingCarAdapter(this)
-
         rvProdList?.layoutManager = LinearLayoutManager(this)
         rvProdList?.adapter = mAdapter
     }
@@ -81,7 +79,6 @@ class ShoppingCarActivity : AppCompatActivity() {
     private fun getData() {
         val dataString = Utility.getStringValueForKey(this, Constants.LOGIN_DATA)
         val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
-        Log.e("Jason","${resultObj?.proData?.size} size")
         resultObj?.proData?.let { mAdapter?.setData(it) }
     }
 
