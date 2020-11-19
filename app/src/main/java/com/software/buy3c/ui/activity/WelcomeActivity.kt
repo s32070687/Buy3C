@@ -3,17 +3,12 @@ package com.software.buy3c.ui.activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.fragment.app.FragmentActivity
-import com.google.android.gms.common.internal.service.Common
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -67,9 +62,11 @@ class WelcomeActivity : AppCompatActivity() , Animation.AnimationListener {
             override fun onFailure(call: Call<AllData>, t: Throwable) {
                 val builder = AlertDialog.Builder(this@WelcomeActivity)
                 builder.setTitle(R.string.app_name)
+                builder.setCancelable(false)
                 builder.setMessage("網路連線異常，起確認網路連線")
-                builder.setPositiveButton("確定",
+                builder.setPositiveButton("重試",
                     DialogInterface.OnClickListener { _, _ ->
+                        getAllData()
                     })
                 builder.setNegativeButton("取消",
                     DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
