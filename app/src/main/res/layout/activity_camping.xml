@@ -18,8 +18,7 @@
                 android:scaleType="fitXY"
                 android:id="@+id/iv_camping"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/test_prod" />
+                android:layout_height="200dp" />
 
             <TextView
                 android:layout_marginLeft="15dp"

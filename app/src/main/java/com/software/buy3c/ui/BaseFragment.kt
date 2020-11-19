@@ -42,7 +42,7 @@ open class BaseFragment : Fragment(), FragmentBackHandler {
     }
 
     override fun onBackPressed(): Boolean {
-        return BackHandlerHelper.handleBackPress(this) //預設為return true，FragmentManager會自動popupBack();
+        return true
     }
 
     // Jun CR #6778
@@ -51,7 +51,7 @@ open class BaseFragment : Fragment(), FragmentBackHandler {
         mOwnActivity?.let {
             val imm = it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             val view = it.currentFocus
-            if (view != null && imm != null) {
+            if (view != null) {
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }

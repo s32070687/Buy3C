@@ -10,7 +10,6 @@
     <ImageView
         android:id="@+id/iv_prod"
         android:scaleType="fitXY"
-        android:src="@drawable/test_prod"
         android:layout_width="match_parent"
         android:layout_height="150dp"/>
 
