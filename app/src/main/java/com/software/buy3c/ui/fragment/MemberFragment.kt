@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -19,17 +18,12 @@ import com.software.buy3c.MyApplication
 import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.ui.FragmentPageManager
 import com.software.buy3c.R
-import com.software.buy3c.api.ApiClientBuilder
-import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.api.gson.MemberData
 import com.software.buy3c.ui.activity.RegisterActivity
 import com.software.buy3c.ui.activity.ShoppingCarActivity
 import com.software.buy3c.ui.adapter.AlsoLikeAdapter
 import com.software.buy3c.util.Constants
 import com.software.buy3c.util.Utility
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * #標題
@@ -86,7 +80,6 @@ class MemberFragment : BaseFragment() {
         val dataString = Utility.getStringValueForKey(mOwnActivity,Constants.LOGIN_DATA)
         val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
         getData()
-        Log.e("Jason","$resultObj mem")
         if (resultObj != null) {
             setLogin(resultObj)
         } else {
@@ -154,7 +147,17 @@ class MemberFragment : BaseFragment() {
         rvAlsoLike = view?.findViewById(R.id.rv_also_like)
 
         btLogout?.setOnClickListener {
-            setLogOut()
+            val builder = AlertDialog.Builder(mOwnActivity)
+            builder.setTitle(R.string.app_name)
+            builder.setMessage("確定登出嗎?")
+            builder.setPositiveButton("確定",
+                DialogInterface.OnClickListener { _, _ ->
+                    setLogOut()
+                })
+            builder.setNegativeButton("取消",
+                DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
+            val alert: AlertDialog = builder.create()
+            alert.show()
         }
 
         mAdapter = mOwnActivity?.let {it ->
@@ -214,19 +217,9 @@ class MemberFragment : BaseFragment() {
     }
 
     private fun setLogOut() {
-        val builder = AlertDialog.Builder(mOwnActivity)
-        builder.setTitle(R.string.app_name)
-        builder.setMessage("確定登出嗎?")
-        builder.setPositiveButton("確定",
-            DialogInterface.OnClickListener { _, _ ->
-                rlLogin?.visibility = View.GONE
-                rlLogout?.visibility = View.VISIBLE
-                Utility.saveStringValueForKey(mOwnActivity, Constants.REMEMBER_LOGIN, "false")
-                Utility.saveStringValueForKey(mOwnActivity, Constants.LOGIN_DATA, null)
-            })
-        builder.setNegativeButton("取消",
-            DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
-        val alert: AlertDialog = builder.create()
-        alert.show()
+        rlLogin?.visibility = View.GONE
+        rlLogout?.visibility = View.VISIBLE
+        Utility.saveStringValueForKey(mOwnActivity, Constants.REMEMBER_LOGIN, "false")
+        Utility.saveStringValueForKey(mOwnActivity, Constants.LOGIN_DATA, null)
     }
 }

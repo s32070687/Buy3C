@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -16,19 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.reflect.TypeToken
 import com.software.buy3c.MyApplication
 import com.software.buy3c.R
-import com.software.buy3c.api.ApiClientBuilder
-import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.api.gson.MemberData
 import com.software.buy3c.ui.BaseFragment
 import com.software.buy3c.ui.FragmentPageManager
-import com.software.buy3c.ui.activity.RegisterActivity
 import com.software.buy3c.ui.activity.ShoppingCarActivity
 import com.software.buy3c.ui.adapter.HomeAdapter
 import com.software.buy3c.util.Constants
 import com.software.buy3c.util.Utility
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * #標題

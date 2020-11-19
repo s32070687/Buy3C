@@ -2,7 +2,6 @@ package com.software.buy3c.ui.activity
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -12,15 +11,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.software.buy3c.MyApplication
 import com.software.buy3c.R
-import com.software.buy3c.api.ApiClientBuilder
-import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.api.gson.MemberData
 import com.software.buy3c.api.gson.ProdData
 import com.software.buy3c.util.Constants
 import com.software.buy3c.util.Utility
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * #標題

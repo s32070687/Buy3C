@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -19,16 +18,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.reflect.TypeToken
 import com.software.buy3c.MyApplication
 import com.software.buy3c.R
-import com.software.buy3c.api.ApiClientBuilder
-import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.api.gson.MemberData
 import com.software.buy3c.api.gson.ProdData
 import com.software.buy3c.util.Constants
 import com.software.buy3c.util.Utility
-import org.w3c.dom.Text
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * #標題

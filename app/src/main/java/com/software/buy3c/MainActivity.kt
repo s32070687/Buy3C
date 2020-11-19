@@ -3,7 +3,6 @@ package com.software.buy3c
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -16,17 +15,9 @@ import com.software.buy3c.ui.fragment.HotSaleFragment
 import com.software.buy3c.ui.fragment.MemberFragment
 import com.software.buy3c.ui.adapter.MainViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.software.buy3c.api.ApiClientBuilder
-import com.software.buy3c.api.gson.AllData
 import com.software.buy3c.ui.fragment.HomeFragment
 import com.software.buy3c.util.Constants
 import com.software.buy3c.util.Utility
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 

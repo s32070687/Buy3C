@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -15,15 +14,12 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.reflect.TypeToken
 import com.software.buy3c.MyApplication
 import com.software.buy3c.R
 import com.software.buy3c.api.gson.MemberData
-import com.software.buy3c.api.gson.ProdData
-import com.software.buy3c.ui.adapter.HotCampingAdapter
 import com.software.buy3c.ui.adapter.ShoppingCarAdapter
 import com.software.buy3c.util.Constants
 import com.software.buy3c.util.Utility
