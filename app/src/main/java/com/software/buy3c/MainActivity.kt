@@ -40,13 +40,14 @@ class MainActivity : AppCompatActivity() {
         R.drawable.hot_activity_tab_selector,
         R.drawable.member_tab_selector
     )
-    private lateinit var database: DatabaseReference
+//    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        database = Firebase.database.reference
-        getAllData()
+        setView()
+//        database = Firebase.database.reference
+//        getAllData()
     }
 
     private fun setView() {
@@ -78,19 +79,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getAllData() {
-        val call = ApiClientBuilder.createApiClient().getAllData()
-        call.enqueue(object : Callback<AllData> {
-            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
-                MyApplication.mAllData = response.body()
-                setView()
-            }
-
-            override fun onFailure(call: Call<AllData>, t: Throwable) {
-                Log.d("response", "${t.message}")
-            }
-        })
-    }
+//    private fun getAllData() {
+//        val call = ApiClientBuilder.createApiClient().getAllData()
+//        call.enqueue(object : Callback<AllData> {
+//            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
+//                MyApplication.mAllData = response.body()
+//                setView()
+//            }
+//
+//            override fun onFailure(call: Call<AllData>, t: Throwable) {
+//                Log.d("response", "${t.message}")
+//            }
+//        })
+//    }
 
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
