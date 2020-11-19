@@ -1,6 +1,8 @@
 package com.software.buy3c.ui.fragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -212,9 +214,19 @@ class MemberFragment : BaseFragment() {
     }
 
     private fun setLogOut() {
-        rlLogin?.visibility = View.GONE
-        rlLogout?.visibility = View.VISIBLE
-        Utility.saveStringValueForKey(mOwnActivity, Constants.REMEMBER_LOGIN, "false")
-        Utility.saveStringValueForKey(mOwnActivity, Constants.LOGIN_DATA, null)
+        val builder = AlertDialog.Builder(mOwnActivity)
+        builder.setTitle(R.string.app_name)
+        builder.setMessage("確定登出嗎?")
+        builder.setPositiveButton("確定",
+            DialogInterface.OnClickListener { _, _ ->
+                rlLogin?.visibility = View.GONE
+                rlLogout?.visibility = View.VISIBLE
+                Utility.saveStringValueForKey(mOwnActivity, Constants.REMEMBER_LOGIN, "false")
+                Utility.saveStringValueForKey(mOwnActivity, Constants.LOGIN_DATA, null)
+            })
+        builder.setNegativeButton("取消",
+            DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
+        val alert: AlertDialog = builder.create()
+        alert.show()
     }
 }

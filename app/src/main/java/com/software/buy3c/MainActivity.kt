@@ -33,21 +33,18 @@ class MainActivity : AppCompatActivity() {
     private var mViewPage: ViewPager? = null
     private var mTabLayout: TabLayout? = null
     private var mPagerAdapter: MainViewPagerAdapter? = null
-    var tabName = arrayOf("首頁", "熱銷榜", "熱門活動", "會員中心")
-    var tabIcon = intArrayOf(
+    private var tabName = arrayOf("首頁", "熱銷榜", "熱門活動", "會員中心")
+    private var tabIcon = intArrayOf(
         R.drawable.home_tab_selector,
         R.drawable.hot_sale_tab_selector,
         R.drawable.hot_activity_tab_selector,
         R.drawable.member_tab_selector
     )
-//    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setView()
-//        database = Firebase.database.reference
-//        getAllData()
     }
 
     private fun setView() {
@@ -78,20 +75,6 @@ class MainActivity : AppCompatActivity() {
             mTabLayout?.getTabAt(i)?.customView = view
         }
     }
-
-//    private fun getAllData() {
-//        val call = ApiClientBuilder.createApiClient().getAllData()
-//        call.enqueue(object : Callback<AllData> {
-//            override fun onResponse(call: Call<AllData>, response: Response<AllData>) {
-//                MyApplication.mAllData = response.body()
-//                setView()
-//            }
-//
-//            override fun onFailure(call: Call<AllData>, t: Throwable) {
-//                Log.d("response", "${t.message}")
-//            }
-//        })
-//    }
 
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)

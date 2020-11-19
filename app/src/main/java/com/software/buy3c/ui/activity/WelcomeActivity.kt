@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -47,6 +48,10 @@ class WelcomeActivity : AppCompatActivity() , Animation.AnimationListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
+        //取消狀態欄
+        this.window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         database = Firebase.database.reference
         getAllData()
     }
@@ -75,7 +80,6 @@ class WelcomeActivity : AppCompatActivity() , Animation.AnimationListener {
     }
 
     private fun setView() {
-        Log.e("Jason","setView")
         ivIcon = findViewById(R.id.iv_icon)
         val animation: Animation = AnimationUtils.loadAnimation(this, R.anim.welcome_anime)
         animation.isFillEnabled = true
@@ -104,17 +108,14 @@ class WelcomeActivity : AppCompatActivity() , Animation.AnimationListener {
     }
 
     override fun onAnimationStart(animation: Animation?) {
-        Log.e("Jason","onAnimationStart")
         //動畫開始
     }
 
     override fun onAnimationRepeat(p0: Animation?) {
-        Log.e("Jason","onAnimationRepeat")
     }
 
     override fun onAnimationEnd(animation: Animation?) {
         //動畫結束
-        Log.e("Jason","onAnimationEnd")
         startActivity(Intent(this@WelcomeActivity, MainActivity::class.java))
         finish()
     }
