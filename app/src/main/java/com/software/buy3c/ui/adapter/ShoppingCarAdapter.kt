@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.reflect.TypeToken
 import com.software.buy3c.MyApplication
 import com.software.buy3c.R
+import com.software.buy3c.ShoppingCartCallBack
 import com.software.buy3c.api.gson.MemberData
 import com.software.buy3c.api.gson.ProdData
 import com.software.buy3c.util.Constants
@@ -36,6 +37,7 @@ class ShoppingCarAdapter (private val context: Context) : RecyclerView.Adapter<S
 
     var mData = ArrayList<ProdData>()
     var ref: DatabaseReference? = null
+    private var callBack: ShoppingCartCallBack? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingCarAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.shopping_car_item, parent, false)
@@ -55,6 +57,10 @@ class ShoppingCarAdapter (private val context: Context) : RecyclerView.Adapter<S
         notifyDataSetChanged()
     }
 
+    fun setIsEmptyCallBack(shoppingCartCallBack: ShoppingCartCallBack) {
+        this.callBack = shoppingCartCallBack
+    }
+
     fun removeItemData(position: Int) {
         val dataString = Utility.getStringValueForKey(context, Constants.LOGIN_DATA)
         val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
@@ -69,6 +75,9 @@ class ShoppingCarAdapter (private val context: Context) : RecyclerView.Adapter<S
         }
         ref?.setValue(MyApplication.mAllData?.MemberData)
         mData.removeAt(position)
+        if (mData.isEmpty()) {
+            callBack?.isEmpty(true)
+        }
         notifyItemRemoved(position)
         notifyDataSetChanged()
     }

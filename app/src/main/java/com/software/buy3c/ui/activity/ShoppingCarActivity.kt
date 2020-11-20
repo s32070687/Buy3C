@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.reflect.TypeToken
 import com.software.buy3c.MyApplication
 import com.software.buy3c.R
+import com.software.buy3c.ShoppingCartCallBack
 import com.software.buy3c.api.gson.MemberData
 import com.software.buy3c.ui.adapter.ShoppingCarAdapter
 import com.software.buy3c.util.Constants
@@ -38,9 +39,11 @@ import com.software.buy3c.util.Utility
 class ShoppingCarActivity : AppCompatActivity() {
 
     private var rvProdList: RecyclerView? = null
+    private var tvEmpty: TextView? = null
     private var mAdapter: ShoppingCarAdapter? = null
     private var btCheckout: Button? = null
     private var ref: DatabaseReference? = null
+    private var mShoppingCartCallBack: ShoppingCartCallBack? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +72,16 @@ class ShoppingCarActivity : AppCompatActivity() {
     }
 
     private fun setView() {
+        mShoppingCartCallBack = object : ShoppingCartCallBack {
+            override fun isEmpty(isShow: Boolean?) {
+                if (isShow!!) {
+                    rvProdList?.visibility = View.GONE
+                    tvEmpty?.visibility = View.VISIBLE
+                }
+            }
+        }
         rvProdList = findViewById(R.id.rv_prod_list)
+        tvEmpty = findViewById(R.id.tv_empty)
         btCheckout = findViewById(R.id.bt_checkout)
 
         mAdapter = ShoppingCarAdapter(this)
@@ -77,18 +89,27 @@ class ShoppingCarActivity : AppCompatActivity() {
         rvProdList?.adapter = mAdapter
 
         btCheckout?.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle(R.string.app_name)
-            builder.setMessage("確定結帳嗎?")
-            builder.setPositiveButton("確定",
-                DialogInterface.OnClickListener { _, _ ->
-                    update()
-                    Toast.makeText(this, "結帳完成", Toast.LENGTH_SHORT).show()
-                })
-            builder.setNegativeButton("取消",
-                DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
-            val alert: AlertDialog = builder.create()
-            alert.show()
+            val dataString = Utility.getStringValueForKey(this, Constants.LOGIN_DATA)
+            val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
+
+            if (resultObj?.proData.isNullOrEmpty()) {
+                Toast.makeText(this, "目前是空的喔~", Toast.LENGTH_SHORT).show()
+            } else {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle(R.string.app_name)
+                builder.setMessage("確定結帳嗎?")
+                builder.setPositiveButton("確定",
+                    DialogInterface.OnClickListener { _, _ ->
+                        update()
+                        rvProdList?.visibility = View.GONE
+                        tvEmpty?.visibility = View.VISIBLE
+                        Toast.makeText(this, "結帳完成", Toast.LENGTH_SHORT).show()
+                    })
+                builder.setNegativeButton("取消",
+                    DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
+                val alert: AlertDialog = builder.create()
+                alert.show()
+            }
         }
     }
 
@@ -105,14 +126,28 @@ class ShoppingCarActivity : AppCompatActivity() {
             }
         }
         ref?.setValue(MyApplication.mAllData?.MemberData)
-        resultObj?.proData?.let { mAdapter?.setData(it) }
+        resultObj?.proData?.let {
+            mAdapter?.setData(it)
+            mShoppingCartCallBack?.let { it1 -> mAdapter?.setIsEmptyCallBack(it1) }
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun getData() {
         val dataString = Utility.getStringValueForKey(this, Constants.LOGIN_DATA)
         val resultObj = Utility.convertStringToGsonObj(dataString, object : TypeToken<MemberData>() {}.type) as MemberData?
-        resultObj?.proData?.let { mAdapter?.setData(it) }
+
+        if (resultObj?.proData.isNullOrEmpty()) {
+            rvProdList?.visibility = View.GONE
+            tvEmpty?.visibility = View.VISIBLE
+        } else {
+            rvProdList?.visibility = View.VISIBLE
+            tvEmpty?.visibility = View.GONE
+            resultObj?.proData?.let {
+                mAdapter?.setData(it)
+                mShoppingCartCallBack?.let { it1 -> mAdapter?.setIsEmptyCallBack(it1) }
+            }
+        }
     }
 
     override fun onBackPressed() {

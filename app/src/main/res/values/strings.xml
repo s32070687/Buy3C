@@ -29,6 +29,7 @@
 
     <!-- 購物車 -->
     <string name="shopping_car_title">購物車</string>
+    <string name="shopping_car_empty_text">現在是空的~趕快去購買</string>
     <string name="shopping_car_checkout">去結帳</string>
 
     <!-- 活動頁 -->
